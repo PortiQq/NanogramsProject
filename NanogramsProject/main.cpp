@@ -12,8 +12,7 @@ int main()
     }
     sf::Sprite sprite;
     sprite.setTexture(texture);
-    //Dodano nowy komentarz
-    //Dodaję drugi komentarz
+    //
 
 
 
@@ -29,7 +28,6 @@ int main()
             game.update();
         }
     }
-
 
 
     //system("pause");

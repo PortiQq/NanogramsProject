@@ -13,6 +13,7 @@ int main()
     sf::Sprite sprite;
     sprite.setTexture(texture);
     //Dodano nowy komentarz
+    //Dodaję drugi komentarz
 
 
 

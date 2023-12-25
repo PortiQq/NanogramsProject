@@ -7,14 +7,16 @@
 
 #include <iostream>
 #include <vector>
+#include "Tile.h"
+
 
 class Game
 {
 private:
 
-	//Zmienne prywatne 
-	sf::RenderWindow* gameWindow;
-	sf::Event event;
+	//pola prywatne 
+	sf::RenderWindow* gameWindow;	//Wskaźnik na okno główne gry
+	sf::Event event;				//Kontrola zdarzeń
 
 	//Szczegóły okna gry
 	sf::VideoMode videoMode;
@@ -23,18 +25,15 @@ private:
 	sf::Image icon;
 	sf::Color backgroundColor;
 
-	sf::Vector2f tileSize;	//Ustalony rozmiar jednej kratki
-	float tileMargin;		//margines między kratkami
-
 	//pozycja myszy
 	sf::Vector2i windowMousePosition;	//int - piksele
 	sf::Vector2f viewMousePosition;		//float
 
+
 	//Logika gry
-	//Kolory kratek w czasie gry
-	sf::Color filled;		//Wypełnione
-	sf::Color unfilled;		//Niewypełnione
-	bool mouseHold;
+	sf::Color filled;		//Kolory wypełnionych kratek w czasie gry
+	sf::Color unfilled;		//Kolory niewypełnionych kratek w czasie gry 
+	bool mouseHold;			//Flaga sprawdzająca czy mysz jest trzymana
 
 
 	int rows, cols;	//Tymczasowo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -42,21 +41,33 @@ private:
 	//metody prywatne okna
 	void initialiseVariables();
 	void createWindow();
-	void initialiseTiles();		//Ustalenie szczegółów pojedynczej kratki
 
-	/////////////
-	//obiekty gry
-
-	std::vector<sf::RectangleShape> tiles;
-	sf::RectangleShape tile;
-
-	/////////////
+	
 
 
 public:
+
+	/////////////
+	//obiekty gry
+	sf::Vector2f tileSize;	//Ustalony rozmiar jednej kratki
+	sf::Color outlineColorForTiles;
+	float outlineThicknessForTiles;
+	float tileMargin;		//margines między kratkami
+
+	std::vector<sf::RectangleShape> tiles;		//stary kod bez użycia
+	sf::RectangleShape tile;					//klasy Tile
+
+	
+
+	//Tile tile2;									//Nowy kod po
+	std::vector<Tile>tiles2;					//użyciu klasy Tile
+
 	//konstruktory destruktory
 	Game();
 	~Game();
+
+
+	/////////////
 
 	//Dostęp do zmiennych
 	const bool gameRunning() const;
@@ -67,7 +78,7 @@ public:
 	void renderTiles();
 
 	void update();
-	void updateTiles();
+	void updateBoard();
 
 	void pollEvents();
 	void updateMousePosition();

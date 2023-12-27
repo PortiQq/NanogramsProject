@@ -21,20 +21,16 @@ void Game::initialiseVariables()
     backgroundColor = sf::Color(180, 170, 145, 255);
 
     //Inicjalizacja szczegółów kratek
-    filled = sf::Color::Black;      
-    unfilled = sf::Color::White;
-
     tileSize = sf::Vector2f(25.f, 25.f);
     outlineColorForTiles = sf::Color::Black;
     outlineThicknessForTiles = 2.f;
     tileMargin = 5.f;
 
-    Tile::setStaticTileParameters(outlineColorForTiles, tileSize, outlineThicknessForTiles);                                                          //Jeśli się wywali to trzeba to przestawić dalej po stworzeniu pierwszego obiektu
+    Tile::setStaticTileParameters(outlineColorForTiles, tileSize, outlineThicknessForTiles, tileMargin);                                                          //Jeśli się wywali to trzeba to przestawić dalej po stworzeniu pierwszego obiektu
 
-    rows = 3;   //tymczasowe rozwiązanie zanim zacznę wczytywać plansze
-    cols = 3;   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-    mouseHold = false;
+    rows = 10;   //tymczasowe rozwiązanie zanim zacznę wczytywać plansze
+    cols = 15;   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    board = Board(rows, cols);
 
 }
 
@@ -55,53 +51,19 @@ void Game::createWindow()   //Tworzenie okna gry
 
 void Game::setUpBoard()
 {
-    sf::Vector2f position;
-    
-    Tile tile2(sf::Vector2f(0.f, 0.f), 0, 1);
-    for (float rowCounter = 1.f; rowCounter <= rows; rowCounter += 1.f)
-        for (float colCounter = 1.f; colCounter <= cols; colCounter += 1.f)
-        {
-            position = sf::Vector2f(rowCounter * (tileSize.x + tileMargin), colCounter * (tileSize.y + tileMargin));
-            tile2.setTilePosition(position);
-            this->tiles2.push_back(tile2);
-        }
-
+    board.setUpBoard(rows,cols);
 }
 
 
 void Game::updateBoard()
 {
-    static bool isMousePressed = false;
-    static unsigned short int initialTileStatus = 0;
+    board.updateBoard(viewMousePosition);
+ }
 
-    for (auto& t : this->tiles2)
-    {
-        if (t.getTileGlobalBounds().contains(this->viewMousePosition))
-        {
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-            {
-                if (!isMousePressed)
-                {
-                    isMousePressed = true;
-                    initialTileStatus = t.getCurrentStatus();
-                }
-                if (initialTileStatus == UNFILLED)
-                    t.setStatus(FILLED);
-                else
-                    t.setStatus(UNFILLED);
-            }
-            else
-            {
-                isMousePressed = false;
-            }
-        }
-    }
-}
-
-void Game::renderTiles()
+void Game::renderGameBoard()
 {
     //Renderowanie kratek
-    for (auto& t : this->tiles2)
+    for (auto &t : board.getTiles())
     {
         this->gameWindow->draw(t.getTile());
 
@@ -111,7 +73,7 @@ void Game::renderTiles()
 
 const bool Game::gameBoardRendered() const
 {
-    if (this->tiles2.size() > 0)
+    if (board.getTiles().size() > 0)
         return true;
     return false;
 }
@@ -150,20 +112,17 @@ void Game::updateMousePosition()
 
 void Game::update()
 {
-    this->pollEvents();
-    this->updateMousePosition();
-    this->updateBoard();
+    this->pollEvents();                         //Obsługa zdarzeń w oknie
+    this->updateMousePosition();                //Aktualizacja pozycji myszy
+    this->updateBoard();                        //Aktualizacja planszy
 }
 
 
 void Game::render()
 {
-    //Wypełnienie okna
-    this->gameWindow->clear(backgroundColor);
-    //rysowanie obiektów
-    this->renderTiles();
-    //Wyświetlenie zawartości w oknie
-    this->gameWindow->display();
+    this->gameWindow->clear(backgroundColor);   //Wypełnienie okna kolorem
+    this->renderGameBoard();                    //rysowanie obiektów
+    this->gameWindow->display();                //Wyświetlenie zawartości w oknie
 }
 
 

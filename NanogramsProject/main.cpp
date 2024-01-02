@@ -1,9 +1,7 @@
 ﻿#include "Game.h"
-#include <iostream>
 
 int main()
 {
-
     //Ładowanie tekstury z pamięci
     sf::Texture texture;
     if (!texture.loadFromFile("image.png"))
@@ -13,13 +11,13 @@ int main()
     sf::Sprite sprite;
     sprite.setTexture(texture);
 
-
+    //Tu się zaczyna kod gry
 
     Game game;  //utworzenie obiektu gry
     if (game.gameRunning())
     {
-        if (!game.gameBoardRendered())
-            game.setUpBoard();
+        if (!game.gameBoardCreated())
+            game.setUpGameBoard();
 
         while (game.gameRunning())  //Główna pętla gry
         {
@@ -27,8 +25,5 @@ int main()
             game.update();
         }
     }
-
-
-    //system("pause");
     return 0;
 }

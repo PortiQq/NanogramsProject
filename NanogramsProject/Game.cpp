@@ -4,12 +4,13 @@ Game::Game()    //Konstruktor okna głównego gry
 {
     this->initialiseVariables();
     this->createWindow();
-
 }
 
 
 Game::~Game()   //destruktor klasy okna gry
 {
+    inputFile.close();      //TODO: idk czy to ma sens
+    std::cout << "Destruktor game";
     delete this->gameWindow;
 }
 
@@ -21,16 +22,30 @@ void Game::initialiseVariables()
     backgroundColor = sf::Color(180, 170, 145, 255);
 
     //Inicjalizacja szczegółów kratek
-    tileSize = sf::Vector2f(25.f, 25.f);
-    outlineColorForTiles = sf::Color::Black;
-    outlineThicknessForTiles = 2.f;
-    tileMargin = 5.f;
+    this->tileSize = sf::Vector2f(25.f, 25.f);
+    this->outlineColorForTiles = sf::Color::Black;
+    this->outlineThicknessForTiles = 2.f;
+    this->tileMargin = 5.f;
+    Tile::setStaticTileParameters(outlineColorForTiles, tileSize, outlineThicknessForTiles, tileMargin);
+   
+    //Inicjalizacja szczegółów text boxów
+    this->textColorForTextBox = sf::Color::Black;
+    this->outlineThicknessForTextBox = 0.f;
+    characterSizeForTextBox = 20;
+    Number::setStaticTextBoxParameters(textColorForTextBox, tileSize, outlineThicknessForTextBox, tileMargin, characterSizeForTextBox);
+    
+    //Inicjalizacja pliku poziomu
+    this->inputFile = std::ifstream("Levels/level1.txt");
+    if (!inputFile.is_open()) {
+        std::cerr << "Error opening the file!" << std::endl;
+        exit(1);
+    }
 
-    Tile::setStaticTileParameters(outlineColorForTiles, tileSize, outlineThicknessForTiles, tileMargin);                                                          //Jeśli się wywali to trzeba to przestawić dalej po stworzeniu pierwszego obiektu
-
-    rows = 10;   //tymczasowe rozwiązanie zanim zacznę wczytywać plansze
-    cols = 15;   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    board = Board(rows, cols);
+    //Ładowanie czcionki z pliku
+    if (!font.loadFromFile("Fonts/arial.ttf")) {
+        std::cerr << "Error loading font\n";
+        exit(1);
+    }
 
 }
 
@@ -49,9 +64,12 @@ void Game::createWindow()   //Tworzenie okna gry
 }
 
 
-void Game::setUpBoard()
+void Game::setUpGameBoard()
 {
-    board.setUpBoard(rows,cols);
+    board.checkDimensions(inputFile);
+    board.createBoard();
+    board.setUpLevel(inputFile);
+    board.setUpPositions();
 }
 
 
@@ -63,17 +81,19 @@ void Game::updateBoard()
 void Game::renderGameBoard()
 {
     //Renderowanie kratek
-    for (auto &t : board.getTiles())
+    for (auto& tileRow : board.getBoard())
     {
-        this->gameWindow->draw(t.getTile());
-
+        for (auto& tile : tileRow)
+        {
+            this->gameWindow->draw(tile->getTile());
+        }
     }
 }
 
 
-const bool Game::gameBoardRendered() const
+const bool Game::gameBoardCreated() const
 {
-    if (board.getTiles().size() > 0)
+    if (board.getBoard().size() > 0)
         return true;
     return false;
 }
@@ -115,6 +135,7 @@ void Game::update()
     this->pollEvents();                         //Obsługa zdarzeń w oknie
     this->updateMousePosition();                //Aktualizacja pozycji myszy
     this->updateBoard();                        //Aktualizacja planszy
+    //this->board.checkIfCompleted();
 }
 
 

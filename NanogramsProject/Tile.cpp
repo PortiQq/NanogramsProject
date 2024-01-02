@@ -6,7 +6,7 @@ sf::Vector2f Tile::tileSize = sf::Vector2f(25.0f, 25.0f);
 float Tile::outlineThickness = 2.0f;
 float Tile::tileMargin = 5.0f;
 
-Tile::Tile(sf::Vector2f tilePosition, short int initialStatus, bool targetStatus)
+Tile::Tile(sf::Vector2f tilePosition, unsigned short initialStatus, bool targetStatus)
     : tilePosition(tilePosition), status(initialStatus), targetStatus(targetStatus)
 {
     this->setStatus(this->status);
@@ -16,9 +16,13 @@ Tile::Tile(sf::Vector2f tilePosition, short int initialStatus, bool targetStatus
     this->tile.setPosition(this->tilePosition);
 }
 
-Tile::Tile() : status(0), targetStatus(1)
+Tile::Tile() : status(0), targetStatus(0)
 {
-    //
+    this->setStatus(this->status);
+    this->tile.setSize(tileSize);
+    this->tile.setOutlineColor(outlineColor);
+    this->tile.setOutlineThickness(outlineThickness);
+    this->tile.setPosition(this->tilePosition);
 }
 
 
@@ -55,12 +59,12 @@ const sf::FloatRect Tile::getTileGlobalBounds() const
     return tile.getGlobalBounds();
 }
 
-const unsigned short int Tile::getCurrentStatus() const
+const unsigned short Tile::getCurrentStatus() const
 {
     return (status) ? FILLED : UNFILLED;
 }
 
-const bool Tile::getTargetStatus() const
+const unsigned short Tile::getTargetStatus() const
 {
     return this->targetStatus;
 }
@@ -76,7 +80,12 @@ void Tile::setTilePosition(sf::Vector2f position)
     this->tile.setPosition(tilePosition);
 }
 
-void Tile::setStatus(short int newStatus)
+void Tile::setTargetStatus(unsigned short newTargetStatus)
+{
+    this->targetStatus = newTargetStatus;
+}
+
+void Tile::setStatus(unsigned short newStatus)
 {
     this->status = newStatus;
     (newStatus) ? this->tile.setFillColor(sf::Color::Black) : this->tile.setFillColor(sf::Color::White);

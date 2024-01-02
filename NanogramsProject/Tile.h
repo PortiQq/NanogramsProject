@@ -12,8 +12,8 @@ class Tile
 		//pola prywatne
 		sf::RectangleShape tile;
 		sf::Vector2f tilePosition;
-		//unsigned short int status;
-		unsigned short int targetStatus;
+		unsigned short status;
+		unsigned short targetStatus;
 
 		//Pola statyczne
 		static sf::Color outlineColor;
@@ -23,9 +23,9 @@ class Tile
 
 
 	public:
-		unsigned short int status;
+
 		//Konstruktory i destruktory
-		Tile(sf::Vector2f tilePosition, short int initialStatus, bool targetStatus);
+		Tile(sf::Vector2f tilePosition, unsigned short initialStatus, bool targetStatus);
 		Tile();
 		~Tile();
 
@@ -36,13 +36,14 @@ class Tile
 		const float getTileMargin() const;
 		const sf::Vector2f getTilePosition() const;
 		const sf::FloatRect getTileGlobalBounds() const;
-		const unsigned short int getCurrentStatus() const;
-		const bool getTargetStatus() const;
+		const unsigned short getCurrentStatus() const;
+		const unsigned short getTargetStatus() const;
 		const sf::RectangleShape getTile() const;
 
 		//settery
 		void setTilePosition(sf::Vector2f position);
-		void setStatus(short int newStatus);
+		void setTargetStatus(unsigned short newTargetStatus);
+		void setStatus(unsigned short newStatus);
 		void changeStatus();
 
 };

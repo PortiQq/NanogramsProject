@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <vector>
+#include <fstream>
 #include "Tile.h"
 #include "Board.h"
 
@@ -22,21 +23,26 @@ private:
 	sf::Image icon;
 	sf::Color backgroundColor;
 
+	//Pliki poziomów;
+	std::ifstream inputFile;
+	sf::Font font;
+
 	//pozycja myszy
 	sf::Vector2i windowMousePosition;	//int - piksele
-	sf::Vector2f viewMousePosition;		//float
+	sf::Vector2f viewMousePosition;		//float - dokładniejsza pozycja
 
 	//Szczegóły dla kratek
 	sf::Vector2f tileSize;				//Ustalony rozmiar jednej kratki
 	sf::Color outlineColorForTiles;
 	float outlineThicknessForTiles;
-	float tileMargin;					//margines między kratkami
+	float tileMargin;					//odstęp między kratkami
 
-	//Logika gry
-	sf::Color filled;		//Kolory wypełnionych kratek w czasie gry
-	sf::Color unfilled;		//Kolory niewypełnionych kratek w czasie gry 
+	//Szczegóły dla text boxów
+	sf::Color textColorForTextBox;
+	float outlineThicknessForTextBox;
+	unsigned short characterSizeForTextBox;
 
-	int rows, cols;	//Tymczasowo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//Pola planszy
 	Board board;
 
 	//metody prywatne okna
@@ -53,17 +59,18 @@ public:
 
 	//Dostęp do zmiennych
 	const bool gameRunning() const;
-	const bool gameBoardRendered() const;
+	const bool gameBoardCreated() const;
 
 	//metody publiczne
-	void render();
+	void render();		
 	void renderGameBoard();
 	void update();
 	void updateBoard();
 	void pollEvents();
 	void updateMousePosition();
 
-	void setUpBoard();
+	void setUpGameBoard();
+
 
 
 };

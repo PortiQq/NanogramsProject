@@ -40,12 +40,11 @@ void Game::initialiseVariables()
         exit(1);
     }
 
-    //Ładowanie czcionki z pliku
+    //Ładowanie czcionki z pliku    //TODO: Nie wiem czy nie wywalić
     if (!font.loadFromFile("Fonts/arial.ttf")) {
         std::cerr << "Error loading font\n";
         exit(1);
     }
-    Clue number(font, backgroundColor);
 
 }
 
@@ -77,11 +76,7 @@ void Game::updateBoard()
 
 void Game::renderGameBoard()
 {
-    //Renderowanie kratek
     board.drawBoard(*this->gameWindow);
-    //Clue number1(font, backgroundColor);
-    //number1.draw(*this->gameWindow);
-    number.draw(*this->gameWindow);
 }
 
 

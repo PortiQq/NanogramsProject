@@ -83,21 +83,13 @@ void Board::checkDimensions(std::ifstream &inputLevel)
 
 void Board::createBoard()
 {
-    sf::Vector2f position;      //TODO: Stąd zniknie ustalanie pozycji
     std::vector<Tile*> tileRow;
-
-    sf::Vector2f oneTileSize = Tile::getTileSize();
-    float tileMargin = Tile::getTileMargin();
-    for (int rowCounter = 1; rowCounter <= this->rows; rowCounter++)
+    for (int rowCounter = 0; rowCounter < this->rows; rowCounter++)
     {
         tileRow.clear();
-        for (int colCounter = 1; colCounter <= this->cols; colCounter++)
+        for (int colCounter = 0; colCounter < this->cols; colCounter++)
         {
-            position = sf::Vector2f
-            (colCounter * (oneTileSize.y + tileMargin),
-                rowCounter * (oneTileSize.x + tileMargin)
-            );  //Stąd zniknie ustalanie pozycji
-            tileRow.push_back(new Tile(position));
+            tileRow.push_back(new Tile());
         }
         this->board.push_back(tileRow);
     }
@@ -139,7 +131,7 @@ void Board::setUpClues()
             if (check == true)
             {
                 counter++;
-                if (end)    //Gdy na końcu jest kratka pełna
+                if (end)    //Gdy na końcu wiersza jest kratka pełna
                 {
                     clueRow.push_back(new Clue(counter));
                     counter = 0;
@@ -203,37 +195,66 @@ void Board::setUpClues()
 
 void Board::setUpPositions()
 {
-    //TODO: set up positions
-    //TODO: Pojawią się pozycje liczb
-    //Oraz pozycje kratek
-
     unsigned short maxCluesWidth = this->gridWidth - this->cols;
     unsigned short maxCluesHeight = this->gridHeight - this->rows;
 
     sf::Vector2f oneTileSize = Tile::getTileSize();
     float tileMargin = Tile::getTileMargin();
-    sf::Vector2f horizontalCluesPosition = sf::Vector2f(tileMargin, tileMargin);  //TODO: Pozycja startowa poziomych podpowiedzi
-    sf::Vector2f verticalCluesPosition = sf::Vector2f(tileMargin, tileMargin);  //TODO: Pozycja startowa pionowych podpowiedzi
-    sf::Vector2f tilesPosition = sf::Vector2f(tileMargin, tileMargin);  //TODO: Pozycja startowa
+    float boxMargin = Clue::getBoxMargin();
+
+    sf::Vector2f tilesPosition = sf::Vector2f(  //Pozycja startowa kratek planszy
+        maxCluesWidth * oneTileSize.x + tileMargin + 100.f, 
+        maxCluesHeight * oneTileSize.y + tileMargin + 100.f);  
+
+    sf::Vector2f horizontalCluesPosition = sf::Vector2f(    //Pozycja startowa podpowiedzi dla wierszy
+        tilesPosition.x,
+        tilesPosition.y - oneTileSize.y - tileMargin);  
+
+    sf::Vector2f verticalCluesPosition = sf::Vector2f(  //Pozycja startowa podpowiedzi dla kolumn
+        tilesPosition.x,
+        tilesPosition.y - oneTileSize.y - tileMargin);  
     
 
-
-    //Stara wersja ustalania pozycji
-
-    /*for (int rowCounter = 1; rowCounter <= this->rows; rowCounter++)
+    for (int row = 0; row < this->rows; row++)  //Ustalanie pozycji kratek planszy
     {
-        tileRow.clear();
-        for (int colCounter = 1; colCounter <= this->cols; colCounter++)
+        for (int col = 0; col < this->cols; col++)
         {
-            position = sf::Vector2f
-            (colCounter * (oneTileSize.y + tileMargin),
-                rowCounter * (oneTileSize.x + tileMargin)
-            );  //Stąd zniknie ustalanie pozycji
-            tileRow.push_back(new Tile(position));
+            this->board[row][col]->setTilePosition  (
+                tilesPosition.y + (oneTileSize.y + tileMargin) * col,
+                tilesPosition.x + (oneTileSize.x + tileMargin) * row    );
         }
-        this->board.push_back(tileRow);
-    }*/
-    
+    }
+
+    int rowCounter = 0;
+    int forwI = 0;  //forward iterator
+    for (auto& clueRow : this->horizontalClues) //Ustalanie pozycji podpowiedzi dla wierszy
+    {
+        for (int i = clueRow.size() - 1; i >= 0; i--)
+        {
+            clueRow[forwI]->setCluePosition(
+                horizontalCluesPosition.y - (oneTileSize.x - boxMargin) * i,
+                horizontalCluesPosition.x + (oneTileSize.x +  boxMargin) * rowCounter);
+            forwI++;
+        }
+        rowCounter++;
+        forwI = 0;
+    }
+   
+    forwI = 0;
+    int colCounter = 0;
+    for (auto& clueCol : this->verticalClues) //Ustalanie pozycji podpowiedzi dla kolumn
+    {
+        for (int i = clueCol.size() - 1; i >= 0; i--)
+        {
+            clueCol[forwI]->setCluePosition(
+                verticalCluesPosition.x + (oneTileSize.x + boxMargin) * colCounter,
+                verticalCluesPosition.y - (oneTileSize.y + boxMargin) * i
+                );
+            forwI++;
+        }
+        colCounter++;
+        forwI = 0;
+    }
 }
 
 
@@ -301,13 +322,29 @@ void Board::updateBoard(sf::Vector2f mousePosition)
 
 void Board::drawBoard(sf::RenderWindow& target)
 {
-    for (auto& tileRow : board)
+    for (auto& tileRow : board) //Rysowanie kratek
     {
         for (auto& tile : tileRow)
         {
-            target.draw(tile->getTile());
+            tile->draw(target);
         }
     }
+
+   for (auto& clueRow : this->horizontalClues)  //Rysowanie podpowiedzi dla wierszy
+   {
+        for (auto& clue : clueRow)
+        {
+            clue->draw(target);
+        }
+   }
+
+   for (auto& clueCol : this->verticalClues)    //Rysowanie podpowiedzi dla kolumn
+   {
+       for (auto& clue : clueCol)
+       {
+           clue->draw(target);
+       }
+   }
 }
 
 
@@ -337,7 +374,7 @@ bool Board::checkIfCompleted()
         {
             if (tile->getBoolCurrentStatus() != tile->getTargetStatus())
             {
-               std::cout << "Board not completed" << std::endl;
+               //std::cout << "Board not completed" << std::endl;
                 return false;
             }
 

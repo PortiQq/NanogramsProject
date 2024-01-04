@@ -15,16 +15,13 @@ private:
 	short cols;
 	short gridWidth;	//Ilość obiektów do wyrenderowania na osi poziomej
 	short gridHeight;	//Ilość obiektów do wyrenderowania na osi pionowej
-	//sf::Vector2f startingPosition;
-	//Metody prywatne
-	void setStartingPosition();		//TODO: Ustalenie pozycji startowej dla generowania planszy
 
 	//Metody dla tworzenia planszy
-	void checkDimensions(std::ifstream& inputLevel);
-	void createBoard();
-	void setUpTiles(std::ifstream& inputLevel);
-	void setUpClues();
-	void setUpPositions();
+	void checkDimensions(std::ifstream& inputLevel);	//Sprawdza plik i ustala rows i cols
+	void createBoard();									//Wypełnia board kratkami
+	void setUpTiles(std::ifstream& inputLevel);			//Ustala docelowe statusy
+	void setUpClues();									//Tworzy tablice podpowiedzi
+	void setUpPositions();								//Ustala pozycje kratek i podpowiedzi
 
 public:
 	//Konstruktory, destruktor

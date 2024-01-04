@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <SFML/Graphics.hpp>
 #include<iostream>
 #include<string>
@@ -9,23 +9,22 @@ private:
 	sf::Text text;
 	sf::RectangleShape textBox;
 	sf::Font font;
-	//sf::Font& textFont;
-	
-	//statyczne pola skopiowane z Tile
+	unsigned short value;
+	sf::Vector2f position;
+
+	//pola statyczne
 	static sf::Color textColor;
 	static unsigned short characterSize;
 	static sf::Vector2f boxSize;
 	static float outlineThickness;
 	static float boxMargin;
 
-	sf::Color boxColor;
-
-	sf::Vector2f position;
-	unsigned short value;
+	//Metoda do ładowania czcionki z pliku
+	void loadFont();
+	
 public:
-	//konstruktory, destruktor, ustawienie parametr�w statycznych
+	//konstruktory, destruktor, ustawienie parametrów statycznych
 	Clue();
-	Clue(sf::Font& font, sf::Color boxColor);
 	Clue(unsigned short value);
 	~Clue();
 	static void setStaticTextBoxParameters(
@@ -38,12 +37,16 @@ public:
 
 	//settery
 	void setValue(int value);
-	void setTextBoxPosition(sf::Vector2f newPosition);
+	void setCluePosition(sf::Vector2f newPosition);
+	void setCluePosition(float xValue, float yValue);
 
 	//gettery
+	static const float getBoxMargin();
+	const sf::RectangleShape getTextBox() const;
+	const sf::Text getText() const;
 
 	//Inne metody publiczne
 	void updateText();
-	void draw(sf::RenderWindow& target);
+	const void draw(sf::RenderWindow& target) const;
 };
 

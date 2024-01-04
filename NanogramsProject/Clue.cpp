@@ -5,7 +5,7 @@
 sf::Color Clue::textColor = sf::Color::Black;
 sf::Vector2f Clue::boxSize = sf::Vector2f(25.0f, 25.0f);
 float Clue::outlineThickness = 0.f;
-float Clue::boxMargin = 5.0f;
+float Clue::boxMargin = 2.5f;
 unsigned short Clue::characterSize = 20;
 
 
@@ -18,54 +18,43 @@ void Clue::setStaticTextBoxParameters(sf::Color textColorSet, sf::Vector2f boxSi
     boxMargin = boxMarginSet;
 }
 
-Clue::Clue() : textBox(), boxColor(sf::Color::White), position(0.0f, 0.0f), value(0)
+
+void Clue::loadFont()
 {
-    text.setCharacterSize(characterSize);
-    text.setFillColor(textColor);
-    this->setValue(this->value);
-    
     if (!font.loadFromFile("Fonts/arial.ttf"))
     {
         std::cerr << "Failed to load font from file Fonts/arial.ttf" << std::endl;
     }
-    text.setFont(font);
-
-    textBox.setSize(boxSize);
-    textBox.setOutlineThickness(outlineThickness);
-    textBox.setFillColor(boxColor);
-    this->setTextBoxPosition(position);
 }
 
-Clue::Clue(sf::Font& font, sf::Color boxColor) : font(font), textBox(), boxColor(boxColor), position(10.0f, 10.0f), value(5)
+
+Clue::Clue() : textBox(), position(0.0f, 0.0f), value(0)
 {
     text.setCharacterSize(characterSize);
     text.setFillColor(textColor);
     this->setValue(this->value);
 
+    this->loadFont();
     text.setFont(font);
 
     textBox.setSize(boxSize);
     textBox.setOutlineThickness(outlineThickness);
-    textBox.setFillColor(sf::Color(150, 150, 125, 255));
-    this->setTextBoxPosition(position);
 }
 
-Clue::Clue(unsigned short value) : textBox(), boxColor(sf::Color::Cyan), position(0.0f, 0.0f), value(value)
+
+Clue::Clue(unsigned short value) : textBox(), position(0.0f, 0.0f), value(value)
 {
     text.setCharacterSize(characterSize);
     text.setFillColor(textColor);
     this->setValue(this->value);
-    if (!font.loadFromFile("Fonts/arial.ttf"))
-    {
-        std::cerr << "Failed to load font from file Fonts/arial.ttf" << std::endl;
-    }
+
+    this->loadFont();
     text.setFont(font);
 
     textBox.setSize(boxSize);
     textBox.setOutlineThickness(outlineThickness);
-    textBox.setFillColor(boxColor);
-    this->setTextBoxPosition(position);
 }
+
 
 Clue::~Clue()
 {
@@ -80,16 +69,6 @@ void Clue::setValue(int value)
 	updateText();
 }
 
-void Clue::setTextBoxPosition(sf::Vector2f newPosition)
-{
-    //TODO: Poprawić: Ustawienie pozycji tekstu na środku kratki
-   
-    this->position = newPosition;
-    textBox.setPosition(this->position);
-    sf::FloatRect textBounds = text.getLocalBounds();
-    text.setPosition(position.x + (textBox.getSize().x - textBounds.width) / 2,
-        position.y + (textBox.getSize().y - textBounds.height) / 2);
-}
 
 void Clue::updateText()
 {
@@ -97,8 +76,47 @@ void Clue::updateText()
     text.setString(textString);
 }
 
-void Clue::draw(sf::RenderWindow& target)
+
+void Clue::setCluePosition(sf::Vector2f newPosition)
 {
-	target.draw(textBox);
-	target.draw(text);
+    //TODO: Poprawić: Ustawienie pozycji tekstu na środku kratki
+   
+    this->position = newPosition;
+    textBox.setPosition(this->position);
+    sf::FloatRect textBounds = text.getLocalBounds();
+    text.setPosition(position.x + (textBox.getSize().x - textBounds.width) / 2,
+        position.y + (textBox.getSize().y - textBounds.height ) / 2 );
+}
+
+
+void Clue::setCluePosition(float xValue, float yValue)
+{
+    this->position.x = xValue;
+    this->position.y = yValue;
+    textBox.setPosition(position.x, position.y);
+
+    sf::FloatRect textBounds = text.getLocalBounds();
+    text.setPosition(position.x + (textBox.getSize().x - textBounds.width) / 2,
+        position.y + (textBox.getSize().y - textBounds.height) / 2);
+}
+
+
+const float Clue::getBoxMargin()
+{
+    return boxMargin;
+}
+
+const sf::RectangleShape Clue::getTextBox() const
+{
+    return this->textBox;
+}
+
+const sf::Text Clue::getText() const
+{
+    return this->text;
+}
+
+const void Clue::draw(sf::RenderWindow& target) const
+{
+	target.draw(this->text);
 }

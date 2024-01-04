@@ -55,10 +55,6 @@ private:
 	void updateBoard();
 	void updateMousePosition();
 
-	//test!!!!!!!!!!!!!!!!!!!!!!
-	Clue number;
-
-
 public:
 	
 

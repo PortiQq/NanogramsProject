@@ -29,7 +29,6 @@ class Tile
 	public:
 
 		//Konstruktory i destruktory
-		Tile(sf::Vector2f tilePosition);
 		Tile();
 		~Tile();
 
@@ -49,8 +48,11 @@ class Tile
 
 		//settery
 		void setTilePosition(sf::Vector2f position);
+		void setTilePosition(float xValue, float yValue);
 		void setTargetStatus(unsigned short newTargetStatus);
 		void setStatus(unsigned short newStatus);
 
+		//Inne metody publiczne
+		const void draw(sf::RenderWindow& target) const;
 };
 

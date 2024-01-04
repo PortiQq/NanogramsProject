@@ -14,25 +14,14 @@ void Tile::setTextures()
         std::cout << "Blad odczytu tekstury cross";
 }
 
-Tile::Tile(sf::Vector2f tilePosition)
-    : tilePosition(tilePosition), status(0), targetStatus(0)
-{
-    this->setStatus(this->status);
-    this->tile.setSize(tileSize);
-    this->tile.setOutlineColor(outlineColor);
-    this->tile.setOutlineThickness(outlineThickness);
-    this->tile.setPosition(this->tilePosition);
-    this->setTextures();
-}
-
 Tile::Tile() : status(0), targetStatus(0)
 {
+    this->setTextures();
     this->setStatus(this->status);
     this->tile.setSize(tileSize);
     this->tile.setOutlineColor(outlineColor);
     this->tile.setOutlineThickness(outlineThickness);
     this->tile.setPosition(this->tilePosition);
-    this->setTextures();
 }
 
 
@@ -108,6 +97,13 @@ void Tile::setTilePosition(sf::Vector2f position)
     this->tile.setPosition(tilePosition);
 }
 
+void Tile::setTilePosition(float xValue, float yValue)
+{
+    this->tilePosition.x = xValue;
+    this->tilePosition.y = yValue;
+    this->tile.setPosition(tilePosition.x, tilePosition.y);
+}
+
 void Tile::setTargetStatus(unsigned short newTargetStatus)
 {
     this->targetStatus = newTargetStatus;
@@ -133,4 +129,9 @@ void Tile::setStatus(unsigned short newStatus)
     default:
         break;
     }
+}
+
+const void Tile::draw(sf::RenderWindow& target) const
+{
+    target.draw(this->tile);
 }

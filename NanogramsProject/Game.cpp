@@ -9,7 +9,6 @@ Game::Game()    //Konstruktor okna głównego gry
 
 Game::~Game()   //destruktor klasy okna gry
 {
-    inputFile.close();      //TODO: idk czy to ma sens
     std::cout << "Destruktor game";
     delete this->gameWindow;
 }
@@ -32,7 +31,7 @@ void Game::initialiseVariables()
     this->textColorForTextBox = sf::Color::Black;
     this->outlineThicknessForTextBox = 0.f;
     characterSizeForTextBox = 20;
-    Number::setStaticTextBoxParameters(textColorForTextBox, tileSize, outlineThicknessForTextBox, tileMargin, characterSizeForTextBox);
+    Clue::setStaticTextBoxParameters(textColorForTextBox, tileSize, outlineThicknessForTextBox, tileMargin, characterSizeForTextBox);
     
     //Inicjalizacja pliku poziomu
     this->inputFile = std::ifstream("Levels/level1.txt");
@@ -46,6 +45,7 @@ void Game::initialiseVariables()
         std::cerr << "Error loading font\n";
         exit(1);
     }
+    Clue number(font, backgroundColor);
 
 }
 
@@ -58,7 +58,7 @@ void Game::createWindow()   //Tworzenie okna gry
     this->style = sf::Style::Titlebar | sf::Style::Close;
     this->gameWindow = new sf::RenderWindow(videoMode, title, style);
     this->gameWindow->setFramerateLimit(60);
-    if (icon.loadFromFile("image.png"))     //Ustawienie ikony okna 
+    if (icon.loadFromFile("Images/cross.png"))     //Ustawienie ikony okna 
         this->gameWindow->setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 
 }
@@ -66,10 +66,7 @@ void Game::createWindow()   //Tworzenie okna gry
 
 void Game::setUpGameBoard()
 {
-    board.checkDimensions(inputFile);
-    board.createBoard();
     board.setUpLevel(inputFile);
-    board.setUpPositions();
 }
 
 
@@ -81,13 +78,10 @@ void Game::updateBoard()
 void Game::renderGameBoard()
 {
     //Renderowanie kratek
-    for (auto& tileRow : board.getBoard())
-    {
-        for (auto& tile : tileRow)
-        {
-            this->gameWindow->draw(tile->getTile());
-        }
-    }
+    board.drawBoard(*this->gameWindow);
+    //Clue number1(font, backgroundColor);
+    //number1.draw(*this->gameWindow);
+    number.draw(*this->gameWindow);
 }
 
 
@@ -135,7 +129,7 @@ void Game::update()
     this->pollEvents();                         //Obsługa zdarzeń w oknie
     this->updateMousePosition();                //Aktualizacja pozycji myszy
     this->updateBoard();                        //Aktualizacja planszy
-    //this->board.checkIfCompleted();
+    this->board.checkIfCompleted();
 }
 
 

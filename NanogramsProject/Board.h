@@ -1,15 +1,30 @@
-#pragma once
+﻿#pragma once
 #include "Tile.h"
-#include "Number.h"
+#include "Clue.h"
 #include<fstream>
 
 
 class Board
 {
 private:
+	//Pola prywatne
 	std::vector<std::vector<Tile*>> board;
+	std::vector<std::vector<Clue*>> horizontalClues;
+	std::vector<std::vector<Clue*>> verticalClues;
 	short rows;
 	short cols;
+	short gridWidth;	//Ilość obiektów do wyrenderowania na osi poziomej
+	short gridHeight;	//Ilość obiektów do wyrenderowania na osi pionowej
+	//sf::Vector2f startingPosition;
+	//Metody prywatne
+	void setStartingPosition();		//TODO: Ustalenie pozycji startowej dla generowania planszy
+
+	//Metody dla tworzenia planszy
+	void checkDimensions(std::ifstream& inputLevel);
+	void createBoard();
+	void setUpTiles(std::ifstream& inputLevel);
+	void setUpClues();
+	void setUpPositions();
 
 public:
 	//Konstruktory, destruktor
@@ -23,14 +38,10 @@ public:
 	std::vector<std::vector<Tile*>> getBoard() const;
 
 	//metody publiczne
-	void checkDimensions(std::ifstream &inputLevel);
-	void createBoard();
 	void setUpLevel(std::ifstream& inputLevel);
-	void setUpPositions();
-
 	void updateBoard(sf::Vector2f mousePosition);
+	void drawBoard(sf::RenderWindow& target);
 
-
-	bool checkIfCompleted();	//TODO: check if board completed
+	bool checkIfCompleted();
 };
 

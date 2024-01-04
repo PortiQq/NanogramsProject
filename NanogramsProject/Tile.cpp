@@ -6,14 +6,23 @@ sf::Vector2f Tile::tileSize = sf::Vector2f(25.0f, 25.0f);
 float Tile::outlineThickness = 2.0f;
 float Tile::tileMargin = 5.0f;
 
-Tile::Tile(sf::Vector2f tilePosition, unsigned short initialStatus, bool targetStatus)
-    : tilePosition(tilePosition), status(initialStatus), targetStatus(targetStatus)
+
+
+void Tile::setTextures()
+{
+    if (!texture.loadFromFile("Images/cross.png"))
+        std::cout << "Blad odczytu tekstury cross";
+}
+
+Tile::Tile(sf::Vector2f tilePosition)
+    : tilePosition(tilePosition), status(0), targetStatus(0)
 {
     this->setStatus(this->status);
     this->tile.setSize(tileSize);
     this->tile.setOutlineColor(outlineColor);
     this->tile.setOutlineThickness(outlineThickness);
     this->tile.setPosition(this->tilePosition);
+    this->setTextures();
 }
 
 Tile::Tile() : status(0), targetStatus(0)
@@ -23,6 +32,7 @@ Tile::Tile() : status(0), targetStatus(0)
     this->tile.setOutlineColor(outlineColor);
     this->tile.setOutlineThickness(outlineThickness);
     this->tile.setPosition(this->tilePosition);
+    this->setTextures();
 }
 
 
@@ -39,16 +49,6 @@ void Tile::setStaticTileParameters(sf::Color outlineColorSet, sf::Vector2f tileS
     tileMargin = tileMarginSet;
 }
 
-const sf::Vector2f Tile::getTileSize() const
-{
-    return this->tileSize;
-}
-
-const float Tile::getTileMargin() const
-{
-    return tileMargin;
-}
-
 const sf::Vector2f Tile::getTilePosition() const
 {
     return sf::Vector2f(this->tilePosition);
@@ -61,10 +61,28 @@ const sf::FloatRect Tile::getTileGlobalBounds() const
 
 const unsigned short Tile::getCurrentStatus() const
 {
-    return (status) ? FILLED : UNFILLED;
+    switch (this->status)
+    {
+    case UNFILLED:
+        return 0;
+    case FILLED:
+        return 1;
+    case CROSSED:
+        return 2;
+    default:
+        return 0;
+    }
 }
 
-const unsigned short Tile::getTargetStatus() const
+const bool Tile::getBoolCurrentStatus() const
+{
+    if (this->status == FILLED)
+        return true;
+    else
+        return false;
+}
+
+const bool Tile::getTargetStatus() const
 {
     return this->targetStatus;
 }
@@ -72,6 +90,16 @@ const unsigned short Tile::getTargetStatus() const
 const sf::RectangleShape Tile::getTile() const
 {
     return tile;
+}
+
+const sf::Vector2f Tile::getTileSize()
+{
+    return tileSize;
+}
+
+const float Tile::getTileMargin()
+{
+    return tileMargin;
 }
 
 void Tile::setTilePosition(sf::Vector2f position)
@@ -88,13 +116,21 @@ void Tile::setTargetStatus(unsigned short newTargetStatus)
 void Tile::setStatus(unsigned short newStatus)
 {
     this->status = newStatus;
-    (newStatus) ? this->tile.setFillColor(sf::Color::Black) : this->tile.setFillColor(sf::Color::White);
-}
 
-void Tile::changeStatus()
-{
-    this->status++;
-    status = status % 2;
-    (status) ? this->tile.setFillColor(sf::Color::Black) : this->tile.setFillColor(sf::Color::White);
+    switch (newStatus)
+    {
+    case UNFILLED:
+        this->tile.setTexture(nullptr);
+        this->tile.setFillColor(sf::Color::White);
+        break;
+    case FILLED:
+        this->tile.setFillColor(sf::Color::Black);
+        break;
+    case CROSSED:
+        this->tile.setFillColor(sf::Color::White);
+        tile.setTexture(&texture);
+        break;
+    default:
+        break;
+    }
 }
-

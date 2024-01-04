@@ -2,20 +2,21 @@
 #include <SFML/Graphics.hpp>
 #include<iostream>
 #include<string>
-class Number
+class Clue
 {
 private:
 	
 	sf::Text text;
 	sf::RectangleShape textBox;
-	sf::Font& font;
+	sf::Font font;
+	//sf::Font& textFont;
 	
 	//statyczne pola skopiowane z Tile
+	static sf::Color textColor;
 	static unsigned short characterSize;
 	static sf::Vector2f boxSize;
 	static float outlineThickness;
 	static float boxMargin;
-	static sf::Color textColor;
 
 	sf::Color boxColor;
 
@@ -23,10 +24,17 @@ private:
 	unsigned short value;
 public:
 	//konstruktory, destruktor, ustawienie parametrów statycznych
-	//Number();
-	~Number();
-	Number(sf::Font& font, sf::Color rectColor);
-	static void setStaticTextBoxParameters(sf::Color textColorSet, sf::Vector2f boxSizeSet, float outlineThicknessSet, float boxMarginSet, unsigned short characterSizeSet);
+	Clue();
+	Clue(sf::Font& font, sf::Color boxColor);
+	Clue(unsigned short value);
+	~Clue();
+	static void setStaticTextBoxParameters(
+		sf::Color textColorSet, 
+		sf::Vector2f boxSizeSet, 
+		float outlineThicknessSet, 
+		float boxMarginSet,
+		unsigned short characterSizeSet
+	);
 
 	//settery
 	void setValue(int value);

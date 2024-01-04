@@ -8,6 +8,7 @@
 #include <fstream>
 #include "Tile.h"
 #include "Board.h"
+#include "Clue.h"
 
 
 class Game
@@ -42,12 +43,20 @@ private:
 	float outlineThicknessForTextBox;
 	unsigned short characterSizeForTextBox;
 
-	//Pola planszy
+	//Pole planszy
 	Board board;
 
 	//metody prywatne okna
 	void initialiseVariables();
 	void createWindow();
+
+	//metody prywatne obsługi planszy gry
+	void renderGameBoard();
+	void updateBoard();
+	void updateMousePosition();
+
+	//test!!!!!!!!!!!!!!!!!!!!!!
+	Clue number;
 
 
 public:
@@ -63,12 +72,8 @@ public:
 
 	//metody publiczne
 	void render();		
-	void renderGameBoard();
 	void update();
-	void updateBoard();
 	void pollEvents();
-	void updateMousePosition();
-
 	void setUpGameBoard();
 
 

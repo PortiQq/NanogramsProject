@@ -135,18 +135,15 @@
   <ItemGroup>
     <ClInclude Include="Board.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="Number.h" />
+    <ClInclude Include="Clue.h" />
     <ClInclude Include="Tile.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Number.cpp" />
+    <ClCompile Include="Clue.cpp" />
     <ClCompile Include="Tile.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="image.png" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Levels\level1.txt" />

@@ -2,6 +2,10 @@
 #include <SFML/Graphics.hpp>
 #include<iostream>
 #include<string>
+
+#define NO_OVERLINE false
+#define OVERLINE true
+
 class Clue
 {
 private:
@@ -9,8 +13,9 @@ private:
 	sf::Text text;
 	sf::RectangleShape textBox;
 	sf::Font font;
-	unsigned short value;
 	sf::Vector2f position;
+	unsigned short value;
+	bool crossedOut;
 
 	//pola statyczne
 	static sf::Color textColor;
@@ -27,7 +32,7 @@ public:
 	Clue();
 	Clue(unsigned short value);
 	~Clue();
-	static void setStaticTextBoxParameters(
+	static void setStaticCluesParameters(
 		sf::Color textColorSet, 
 		sf::Vector2f boxSizeSet, 
 		float outlineThicknessSet, 
@@ -37,6 +42,7 @@ public:
 
 	//settery
 	void setValue(int value);
+	void setStatus(bool newStatus);
 	void setCluePosition(sf::Vector2f newPosition);
 	void setCluePosition(float xValue, float yValue);
 

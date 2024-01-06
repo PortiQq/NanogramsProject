@@ -9,7 +9,7 @@ float Clue::boxMargin = 2.5f;
 unsigned short Clue::characterSize = 20;
 
 
-void Clue::setStaticTextBoxParameters(sf::Color textColorSet, sf::Vector2f boxSizeSet, float outlineThicknessSet, float boxMarginSet, unsigned short characterSizeSet)
+void Clue::setStaticCluesParameters(sf::Color textColorSet, sf::Vector2f boxSizeSet, float outlineThicknessSet, float boxMarginSet, unsigned short characterSizeSet)
 {
     textColor = textColorSet;
     characterSize = characterSizeSet;
@@ -21,31 +21,33 @@ void Clue::setStaticTextBoxParameters(sf::Color textColorSet, sf::Vector2f boxSi
 
 void Clue::loadFont()
 {
-    if (!font.loadFromFile("Fonts/arial.ttf"))
+    if (!font.loadFromFile("Fonts/Arial.ttf"))
     {
         std::cerr << "Failed to load font from file Fonts/arial.ttf" << std::endl;
     }
 }
 
 
-Clue::Clue() : textBox(), position(0.0f, 0.0f), value(0)
+Clue::Clue() : textBox(), position(0.0f, 0.0f), value(0), crossedOut(false)
 {
     text.setCharacterSize(characterSize);
     text.setFillColor(textColor);
     this->setValue(this->value);
-
+    
     this->loadFont();
     text.setFont(font);
 
     textBox.setSize(boxSize);
     textBox.setOutlineThickness(outlineThickness);
+    
 }
 
 
-Clue::Clue(unsigned short value) : textBox(), position(0.0f, 0.0f), value(value)
+Clue::Clue(unsigned short value) : textBox(), position(0.0f, 0.0f), value(value), crossedOut(false)
 {
     text.setCharacterSize(characterSize);
     text.setFillColor(textColor);
+    
     this->setValue(this->value);
 
     this->loadFont();
@@ -67,6 +69,14 @@ void Clue::setValue(int value)
 {
 	this->value = value;
 	updateText();
+}
+
+void Clue::setStatus(bool newStatus)
+{
+    this->crossedOut = newStatus;
+    (this->crossedOut) ? 
+        text.setStyle(sf::Text::Style::StrikeThrough) : 
+        text.setStyle(sf::Text::Style::Regular);
 }
 
 

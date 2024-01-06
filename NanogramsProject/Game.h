@@ -39,9 +39,9 @@ private:
 	float tileMargin;					//odstęp między kratkami
 
 	//Szczegóły dla text boxów
-	sf::Color textColorForTextBox;
-	float outlineThicknessForTextBox;
-	unsigned short characterSizeForTextBox;
+	sf::Color textColorForClues;
+	float outlineThicknessForClues;
+	unsigned short characterSizeForClues;
 
 	//Pole planszy
 	Board board;
@@ -71,6 +71,7 @@ public:
 	void update();
 	void pollEvents();
 	void setUpGameBoard();
+	void runGame();
 
 
 

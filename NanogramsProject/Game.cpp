@@ -27,11 +27,11 @@ void Game::initialiseVariables()
     this->tileMargin = 5.f;
     Tile::setStaticTileParameters(outlineColorForTiles, tileSize, outlineThicknessForTiles, tileMargin);
    
-    //Inicjalizacja szczegółów text boxów
-    this->textColorForTextBox = sf::Color::Black;
-    this->outlineThicknessForTextBox = 0.f;
-    characterSizeForTextBox = 20;
-    Clue::setStaticTextBoxParameters(textColorForTextBox, tileSize, outlineThicknessForTextBox, tileMargin, characterSizeForTextBox);
+    //Inicjalizacja szczegółów podpowiedzi
+    this->textColorForClues = sf::Color::Black;
+    this->outlineThicknessForClues = 0.f;
+    this->characterSizeForClues = 18;
+    Clue::setStaticCluesParameters(textColorForClues, tileSize, outlineThicknessForClues, tileMargin, characterSizeForClues);
     
     //Inicjalizacja pliku poziomu
     this->inputFile = std::ifstream("Levels/level1.txt");
@@ -69,9 +69,11 @@ void Game::setUpGameBoard()
 }
 
 
+
 void Game::updateBoard()
 {
     board.updateBoard(viewMousePosition);
+    board.updateClues();
  }
 
 void Game::renderGameBoard()
@@ -94,7 +96,7 @@ const bool Game::gameRunning() const    //sprawdza czy okno gry jest otwarte
 }
 
 
-void Game::pollEvents()  //metoda do obsługi zdarzeń
+void Game::pollEvents()  //metoda do obsługi zdarzeń okna
 {
     while (this->gameWindow->pollEvent(event))
     {
@@ -135,4 +137,19 @@ void Game::render()
     this->gameWindow->display();                //Wyświetlenie zawartości w oknie
 }
 
+
+void Game::runGame()
+{
+    if (this->gameRunning())
+    {
+        if (!this->gameBoardCreated())
+            this->setUpGameBoard();
+
+        while (gameRunning())
+        {
+            this->render();
+            this->update();
+        }
+    }
+}
 

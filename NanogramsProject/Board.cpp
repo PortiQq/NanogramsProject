@@ -319,6 +319,11 @@ void Board::updateBoard(sf::Vector2f mousePosition)
     }
 }
 
+void Board::updateClues()
+{
+    //TODO: Wykreślanie numerków
+}
+
 
 void Board::drawBoard(sf::RenderWindow& target)
 {

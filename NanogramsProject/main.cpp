@@ -2,17 +2,8 @@
 
 int main()
 {
-    Game game;  //utworzenie obiektu gry
-    if (game.gameRunning())
-    {
-        if (!game.gameBoardCreated())
-            game.setUpGameBoard();
+    Game game;      //utworzenie obiektu gry
+    game.runGame(); //Metoda obsługi gry
 
-        while (game.gameRunning())  //Główna pętla gry
-        {
-            game.render();
-            game.update();
-        }
-    }
     return 0;
 }

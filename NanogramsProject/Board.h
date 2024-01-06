@@ -37,6 +37,7 @@ public:
 	//metody publiczne
 	void setUpLevel(std::ifstream& inputLevel);
 	void updateBoard(sf::Vector2f mousePosition);
+	void updateClues();
 	void drawBoard(sf::RenderWindow& target);
 
 	bool checkIfCompleted();

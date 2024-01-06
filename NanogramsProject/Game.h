@@ -1,14 +1,8 @@
 ﻿#pragma once
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>  
-#include <SFML/System.hpp>
 
-#include <iostream>
-#include <vector>
-#include <fstream>
-#include "Tile.h"
-#include "Board.h"
-#include "Clue.h"
+#include "MainMenu.h"
+#include "GameState.h"
+
 
 
 class Game
@@ -24,7 +18,10 @@ private:
 	sf::Image icon;
 	sf::Color backgroundColor;
 
-	//Pliki poziomów;
+	//Stany gry
+	std::stack<State*> states;
+
+	//Pliki poziomów
 	std::ifstream inputFile;
 	sf::Font font;
 
@@ -43,16 +40,12 @@ private:
 	float outlineThicknessForClues;
 	unsigned short characterSizeForClues;
 
-	//Pole planszy
-	Board board;
-
 	//metody prywatne okna
 	void initialiseVariables();
 	void createWindow();
+	void initialiseStates();
 
-	//metody prywatne obsługi planszy gry
-	void renderGameBoard();
-	void updateBoard();
+	//Pozycja myszy
 	void updateMousePosition();
 
 public:
@@ -64,14 +57,13 @@ public:
 
 	//Dostęp do zmiennych
 	const bool gameRunning() const;
-	const bool gameBoardCreated() const;
 
 	//metody publiczne
 	void render();		
 	void update();
 	void pollEvents();
-	void setUpGameBoard();
 	void runGame();
+	void endApplication();
 
 
 

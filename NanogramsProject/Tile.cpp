@@ -131,7 +131,7 @@ void Tile::setStatus(unsigned short newStatus)
     }
 }
 
-const void Tile::draw(sf::RenderWindow& target) const
+const void Tile::draw(sf::RenderTarget& target) const
 {
     target.draw(this->tile);
 }

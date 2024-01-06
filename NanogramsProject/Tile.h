@@ -53,6 +53,6 @@ class Tile
 		void setStatus(unsigned short newStatus);
 
 		//Inne metody publiczne
-		const void draw(sf::RenderWindow& target) const;
+		const void draw(sf::RenderTarget& target) const;
 };
 

@@ -38,7 +38,7 @@ public:
 	void setUpLevel(std::ifstream& inputLevel);
 	void updateBoard(sf::Vector2f mousePosition);
 	void updateClues();
-	void drawBoard(sf::RenderWindow& target);
+	void drawBoard(sf::RenderTarget& target);
 
 	bool checkIfCompleted();
 };

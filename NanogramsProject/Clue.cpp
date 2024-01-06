@@ -126,7 +126,7 @@ const sf::Text Clue::getText() const
     return this->text;
 }
 
-const void Clue::draw(sf::RenderWindow& target) const
+const void Clue::draw(sf::RenderTarget& target) const
 {
 	target.draw(this->text);
 }

@@ -53,6 +53,6 @@ public:
 
 	//Inne metody publiczne
 	void updateText();
-	const void draw(sf::RenderWindow& target) const;
+	const void draw(sf::RenderTarget& target) const;
 };
 

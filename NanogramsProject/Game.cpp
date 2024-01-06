@@ -4,13 +4,21 @@ Game::Game()    //Konstruktor okna głównego gry
 {
     this->initialiseVariables();
     this->createWindow();
+    this->initialiseStates();
 }
 
 
 Game::~Game()   //destruktor klasy okna gry
 {
-    std::cout << "Destruktor game";
+    std::cout << "Destruktor game: Usuwane sa wszystkie stany\n";
     delete this->gameWindow;
+
+    while (!this->states.empty())
+    {
+        delete this->states.top();
+        this->states.pop();
+    }
+        
 }
 
 
@@ -63,30 +71,10 @@ void Game::createWindow()   //Tworzenie okna gry
 }
 
 
-void Game::setUpGameBoard()
+void Game::initialiseStates()
 {
-    board.setUpLevel(inputFile);
-}
-
-
-
-void Game::updateBoard()
-{
-    board.updateBoard(viewMousePosition);
-    board.updateClues();
- }
-
-void Game::renderGameBoard()
-{
-    board.drawBoard(*this->gameWindow);
-}
-
-
-const bool Game::gameBoardCreated() const
-{
-    if (board.getBoard().size() > 0)
-        return true;
-    return false;
+    this->states.push(new GameState(this->gameWindow)); //TODO: Będzie zaczynało się od menu raczej
+    this->states.push(new MainMenu(this->gameWindow));
 }
 
 
@@ -105,9 +93,7 @@ void Game::pollEvents()  //metoda do obsługi zdarzeń okna
         case sf::Event::Closed:
             this->gameWindow->close();
             break;
-        case sf::Event::KeyPressed:
-            if (this->event.key.code == sf::Keyboard::Escape)
-                this->gameWindow->close();
+        default:
             break;
         }
     }
@@ -125,31 +111,54 @@ void Game::update()
 {
     this->pollEvents();                         //Obsługa zdarzeń w oknie
     this->updateMousePosition();                //Aktualizacja pozycji myszy
-    this->updateBoard();                        //Aktualizacja planszy
-    this->board.checkIfCompleted();
+
+    if (!this->states.empty())  //Obsługa stanów
+    {
+        this->states.top()->update(viewMousePosition);  //Update bieżącego stanu
+
+        if (this->states.top()->getQuit())  //Wychodzenie z bieżącego stanu
+        {
+            this->states.top()->endState();
+
+            delete this->states.top();  //Zwalnianie pamięci po stanie
+            this->states.pop();         //Board także jest usuwana
+        }
+    }
+    else    //Gdy wszystkie stany są zamknięte - koniec działania programu
+    {
+        this->endApplication();
+        this->gameWindow->close();
+    }
 }
 
 
 void Game::render()
 {
     this->gameWindow->clear(backgroundColor);   //Wypełnienie okna kolorem
-    this->renderGameBoard();                    //rysowanie obiektów
+
+    if (!this->states.empty())                          //Dopóki istnieje jakikolwiek stan aplikacji
+        this->states.top()->render(this->gameWindow);   //Obiekty są rysowane na ekranie
+
     this->gameWindow->display();                //Wyświetlenie zawartości w oknie
 }
 
 
 void Game::runGame()
 {
-    if (this->gameRunning())
+    while (gameRunning())
     {
-        if (!this->gameBoardCreated())
-            this->setUpGameBoard();
-
-        while (gameRunning())
+        if (!this->states.empty())  
         {
-            this->render();
-            this->update();
+            if (!this->states.top()->checkIfSetUp())
+                this->states.top()->setUpState(this->inputFile);
         }
+        this->render();
+        this->update();
     }
+}
+
+void Game::endApplication()
+{
+    std::cout << "Ending application\n";
 }
 

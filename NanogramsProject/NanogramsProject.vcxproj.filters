@@ -13,19 +13,37 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="States">
+      <UniqueIdentifier>{cccc5555-021a-4823-8724-ec707c408f78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elementy gry">
+      <UniqueIdentifier>{81d5f259-4e1b-481c-baf3-e82594278d60}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="Tile.h">
+    <ClInclude Include="State.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="Board.h">
-      <Filter>Pliki nagłówkowe</Filter>
+    <ClInclude Include="Tile.h">
+      <Filter>Elementy gry</Filter>
     </ClInclude>
     <ClInclude Include="Clue.h">
-      <Filter>Pliki nagłówkowe</Filter>
+      <Filter>Elementy gry</Filter>
+    </ClInclude>
+    <ClInclude Include="Board.h">
+      <Filter>Elementy gry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -35,14 +53,26 @@
     <ClCompile Include="main.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="Tile.cpp">
+    <ClCompile Include="State.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-    <ClCompile Include="Board.cpp">
-      <Filter>Pliki źródłowe</Filter>
+    <ClCompile Include="Tile.cpp">
+      <Filter>Elementy gry</Filter>
     </ClCompile>
     <ClCompile Include="Clue.cpp">
-      <Filter>Pliki źródłowe</Filter>
+      <Filter>Elementy gry</Filter>
+    </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>Elementy gry</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

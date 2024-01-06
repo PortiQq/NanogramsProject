@@ -49,7 +49,7 @@ Board::~Board()
     }
     verticalClues.clear();
 
-    std::cout << "Destruktor board";
+    std::cout << "Destruktor board\n";
 }
 
 void Board::checkDimensions(std::ifstream &inputLevel)
@@ -325,7 +325,7 @@ void Board::updateClues()
 }
 
 
-void Board::drawBoard(sf::RenderWindow& target)
+void Board::drawBoard(sf::RenderTarget& target)
 {
     for (auto& tileRow : board) //Rysowanie kratek
     {

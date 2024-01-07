@@ -105,13 +105,15 @@ void Board::setUpTiles(std::ifstream& inputLevel)
         std::istringstream iss(line);
         int x = 0, y = 0;
         if (iss >> x >> y) {
-            std::cout << "Odczyt w funkcji setUpLevel: " << x << " " << y << std::endl;
+            std::cout << "Odczyt w funkcji setUpTiles: " << x << " " << y << std::endl;
             this->board[x][y]->setTargetStatus(FILLED);
         }
         else {
             std::cerr << "Error reading line: " << line << std::endl;
         }
     }
+    inputLevel.clear();
+    inputLevel.seekg(0, std::ios::beg);
 }
 
 
@@ -142,7 +144,7 @@ void Board::setUpClues()
             {
                 if (counter > 0) 
                 {
-                    clueRow.push_back(new Clue(counter));
+                    clueRow.push_back(new Clue(counter));   //TODO: Przekazać czcionkę w konstruktorze
                     counter = 0;
                 }
             }    
@@ -207,12 +209,12 @@ void Board::setUpPositions()
         maxCluesHeight * oneTileSize.y + tileMargin + 100.f);  
 
     sf::Vector2f horizontalCluesPosition = sf::Vector2f(    //Pozycja startowa podpowiedzi dla wierszy
-        tilesPosition.x,
+        tilesPosition.x - tileMargin,
         tilesPosition.y - oneTileSize.y - tileMargin);  
 
     sf::Vector2f verticalCluesPosition = sf::Vector2f(  //Pozycja startowa podpowiedzi dla kolumn
         tilesPosition.x,
-        tilesPosition.y - oneTileSize.y - tileMargin);  
+        tilesPosition.y - oneTileSize.y - tileMargin);
     
 
     for (int row = 0; row < this->rows; row++)  //Ustalanie pozycji kratek planszy
@@ -258,12 +260,12 @@ void Board::setUpPositions()
 }
 
 
-void Board::setUpLevel(std::ifstream& inputLevel)
+void Board::setUpLevel(std::ifstream& inputLevel)   //TODO: Dodać font
 {
     this->checkDimensions(inputLevel);
     this->createBoard();
-    this->setUpTiles(inputLevel);
-    this->setUpClues();
+    this->setUpTiles(inputLevel);   
+    this->setUpClues();             //TODO: Przekazać im czcionkę
     this->setUpPositions();
 }
 
@@ -388,3 +390,4 @@ bool Board::checkIfCompleted()
     std::cout << "Board completed" << std::endl;
     return true;
 }
+

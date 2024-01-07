@@ -41,5 +41,6 @@ public:
 	void drawBoard(sf::RenderTarget& target);
 
 	bool checkIfCompleted();
+
 };
 

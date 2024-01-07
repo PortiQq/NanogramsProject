@@ -45,9 +45,6 @@ private:
 	void createWindow();
 	void initialiseStates();
 
-	//Pozycja myszy
-	void updateMousePosition();
-
 public:
 	
 

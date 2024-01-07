@@ -1,7 +1,8 @@
 ﻿#include "GameState.h"
+#include "MainMenu.h"
 
 
-GameState::GameState(sf::RenderWindow* window) : State(window)
+GameState::GameState(sf::RenderWindow* window, std::stack<State*>* states) : State(window, states)
 {
 
 }
@@ -16,7 +17,6 @@ GameState::~GameState()
 void GameState::setUpState(std::ifstream& inputFile)
 {
 	this->setUpGameBoard(inputFile);
-	//this->setStateStatus();
 	this->isSetUp = true;
 }
 
@@ -24,6 +24,7 @@ void GameState::setUpState(std::ifstream& inputFile)
 void GameState::endState()
 {
 	std::cout << "Ending game state"<<std::endl;
+	this->board.~Board();
 	std::cout << "..." << std::endl;
 	std::cout<<"Game state ended\n";
 }
@@ -31,14 +32,14 @@ void GameState::endState()
 
 void GameState::renderGameBoard(sf::RenderTarget& target)
 {
-	board.drawBoard(target);
+	this->board.drawBoard(target);
 }
 
 
-void GameState::updateBoard(sf::Vector2f mousePosition)
+void GameState::updateBoard()
 {
-	board.updateBoard(mousePosition);
-	board.updateClues();
+	this->board.updateBoard(this->viewMousePosition);
+	this->board.updateClues();
 }
 
 
@@ -60,10 +61,11 @@ void GameState::updateKeybinds()
 }
 
 
-void GameState::update(sf::Vector2f mousePosition)
+void GameState::update()
 {
+	this->updateMousePosition();
 	this->updateKeybinds();
-	this->updateBoard(mousePosition);
+	this->updateBoard();
 
 	if (this->board.checkIfCompleted())	//TODO: tu można dodać zdarzenie po ukończeniu poziomu
 	{

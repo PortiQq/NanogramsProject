@@ -37,7 +37,7 @@ void Game::initialiseVariables()
    
     //Inicjalizacja szczegółów podpowiedzi
     this->textColorForClues = sf::Color::Black;
-    this->outlineThicknessForClues = 0.f;
+    this->outlineThicknessForClues = 1.f;
     this->characterSizeForClues = 18;
     Clue::setStaticCluesParameters(textColorForClues, tileSize, outlineThicknessForClues, tileMargin, characterSizeForClues);
     
@@ -45,12 +45,6 @@ void Game::initialiseVariables()
     this->inputFile = std::ifstream("Levels/level1.txt");
     if (!inputFile.is_open()) {
         std::cerr << "Error opening the file!" << std::endl;
-        exit(1);
-    }
-
-    //Ładowanie czcionki z pliku    //TODO: Nie wiem czy nie wywalić
-    if (!font.loadFromFile("Fonts/arial.ttf")) {
-        std::cerr << "Error loading font\n";
         exit(1);
     }
 
@@ -73,8 +67,8 @@ void Game::createWindow()   //Tworzenie okna gry
 
 void Game::initialiseStates()
 {
-    this->states.push(new GameState(this->gameWindow)); //TODO: Będzie zaczynało się od menu raczej
-    this->states.push(new MainMenu(this->gameWindow));
+    //this->states.push(new GameState((this->gameWindow), &this->states)); //TODO: Będzie zaczynało się od menu raczej
+    this->states.push(new MainMenu((this->gameWindow), &this->states));
 }
 
 
@@ -100,21 +94,13 @@ void Game::pollEvents()  //metoda do obsługi zdarzeń okna
 }
 
 
-void Game::updateMousePosition()
-{
-    this->windowMousePosition = sf::Mouse::getPosition(*this->gameWindow);
-    this->viewMousePosition = this->gameWindow->mapPixelToCoords(this->windowMousePosition);
-}
-
-
 void Game::update()
 {
     this->pollEvents();                         //Obsługa zdarzeń w oknie
-    this->updateMousePosition();                //Aktualizacja pozycji myszy
 
     if (!this->states.empty())  //Obsługa stanów
     {
-        this->states.top()->update(viewMousePosition);  //Update bieżącego stanu
+        this->states.top()->update();  //Update bieżącego stanu
 
         if (this->states.top()->getQuit())  //Wychodzenie z bieżącego stanu
         {

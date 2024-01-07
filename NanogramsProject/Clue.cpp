@@ -42,7 +42,7 @@ Clue::Clue() : textBox(), position(0.0f, 0.0f), value(0), crossedOut(false)
     
 }
 
-
+//TODO: Dodać czcionkę jako parametr
 Clue::Clue(unsigned short value) : textBox(), position(0.0f, 0.0f), value(value), crossedOut(false)
 {
     text.setCharacterSize(characterSize);
@@ -50,7 +50,7 @@ Clue::Clue(unsigned short value) : textBox(), position(0.0f, 0.0f), value(value)
     
     this->setValue(this->value);
 
-    this->loadFont();
+    this->loadFont();   //TODO: To pójdzie do usunięcia
     text.setFont(font);
 
     textBox.setSize(boxSize);
@@ -89,13 +89,12 @@ void Clue::updateText()
 
 void Clue::setCluePosition(sf::Vector2f newPosition)
 {
-    //TODO: Poprawić: Ustawienie pozycji tekstu na środku kratki
-   
     this->position = newPosition;
     textBox.setPosition(this->position);
     sf::FloatRect textBounds = text.getLocalBounds();
-    text.setPosition(position.x + (textBox.getSize().x - textBounds.width) / 2,
-        position.y + (textBox.getSize().y - textBounds.height ) / 2 );
+    text.setPosition(
+        position.x + (textBox.getGlobalBounds().width /2.f) - textBounds.width / 2.f,
+        position.y + (textBox.getGlobalBounds().height /2.f) - textBounds.height  / 2.f );
 }
 
 

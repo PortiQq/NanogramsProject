@@ -16,6 +16,8 @@ private:
 	short gridWidth;	//Ilość obiektów do wyrenderowania na osi poziomej
 	short gridHeight;	//Ilość obiektów do wyrenderowania na osi pionowej
 
+	sf::Texture& crossTexture;
+
 	//Metody dla tworzenia planszy
 	void checkDimensions(std::ifstream& inputLevel);	//Sprawdza plik i ustala rows i cols
 	void createBoard();									//Wypełnia board kratkami
@@ -25,13 +27,15 @@ private:
 
 public:
 	//Konstruktory, destruktor
-	Board(short rows, short cols);
-	Board();
+	Board(short rows, short cols, sf::Texture& texture);
+	Board(sf::Texture& texture);
 	~Board();
 
 	//gettery
 	const short getRows() const;
 	const short getCols() const;
+	const short getGridWidth() const;
+	const short getGridHeight() const;
 	std::vector<std::vector<Tile*>> getBoard() const;
 
 	//metody publiczne
@@ -41,6 +45,8 @@ public:
 	void drawBoard(sf::RenderTarget& target);
 
 	bool checkIfCompleted();
+
+	void resize(sf::Vector2f newTileSize, float newMargin, int newCharacterSize);
 
 };
 

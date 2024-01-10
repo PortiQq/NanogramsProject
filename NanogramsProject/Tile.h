@@ -10,7 +10,7 @@ class Tile
 {
 	private:
 		//pola prywatne
-		sf::RectangleShape tile;
+		sf::RectangleShape tile;	
 		sf::Vector2f tilePosition;
 		unsigned short status;
 		bool targetStatus;
@@ -21,19 +21,18 @@ class Tile
 		static float outlineThickness;
 		static float tileMargin;
 
-		//Pola tekstur
-		sf::Texture texture;
-		//Metoda odczytująca tekstury z pliku
-		void setTextures();
+		//Tekstury
+		sf::Texture& crossTexture;		//TODO: zmienić na wskaźnik do tekstury
 
 	public:
 
 		//Konstruktory i destruktory
-		Tile();
+		Tile(sf::Texture& texture);
 		~Tile();
 
 		//Ustalenie ogólnych szczegółów kratek
 		static void setStaticTileParameters(sf::Color outlineColorSet, sf::Vector2f tileSizeSet, float outlineThicknessSet, float tileMarginSet);
+		static void setNewSizeAndMargin(sf::Vector2f newtileSize, float newTileMargin);
 
 		//gettery
 		const sf::Vector2f getTilePosition() const;
@@ -51,6 +50,8 @@ class Tile
 		void setTilePosition(float xValue, float yValue);
 		void setTargetStatus(unsigned short newTargetStatus);
 		void setStatus(unsigned short newStatus);
+		void setNewTileSize(sf::Vector2f newTileSize);	//Do zmiany wielkości kratek w przypadku dużych obrazków
+
 
 		//Inne metody publiczne
 		const void draw(sf::RenderTarget& target) const;

@@ -2,7 +2,7 @@
 
 
 Button::Button(float x, float y, float width, float height, 
-	sf::Font& font, std::string text, 
+	sf::Font& font, std::string text, int characterSize, 
 	sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor) :
 	font(font)
 {
@@ -14,10 +14,11 @@ Button::Button(float x, float y, float width, float height,
 	this->text.setFont(this->font);
 	this->text.setString(text);
 	this->text.setFillColor(sf::Color::Black);
-	this->text.setCharacterSize(20);
-	this->text.setPosition(
+	this->text.setCharacterSize(characterSize);
+	this->text.setPosition
+	(
 		this->button.getPosition().x + (this->button.getGlobalBounds().width / 2.f) - this->text.getGlobalBounds().width / 2.f,
-		this->button.getPosition().y + (this->button.getGlobalBounds().height / 2.f) - this->text.getGlobalBounds().height / 2.f
+		this->button.getPosition().y + (this->button.getGlobalBounds().height / 2.f) - this->text.getGlobalBounds().height / 2.f - 2.5f
 	);
 	this->idleColor = idleColor;
 	this->hoverColor = hoverColor;
@@ -36,18 +37,16 @@ const bool Button::isPressed() const
 	return false;
 }
 
-void Button::update(sf::Vector2f mousePosition)
+void Button::update(sf::Vector2f mousePosition, sf::Event& event)
 {
-	//Gdy nic się nie dzieje
-	this->buttonStatus = BTN_IDLE;
 
-	//Gdy najedziemy na przycisk
-	if (this->button.getGlobalBounds().contains(mousePosition))
+	this->buttonStatus = BTN_IDLE;	//Gdy nic się nie dzieje
+
+	if (this->button.getGlobalBounds().contains(mousePosition))	//Gdy najedziemy na przycisk
 	{
 		this->buttonStatus = BTN_HOVER;
 
-		//Gdy wciśniemy przycisk
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)	//Gdy wciśniemy przycisk
 		{
 			this->buttonStatus = BTN_PRESSED;
 		}

@@ -40,13 +40,6 @@ void Game::initialiseVariables()
     this->outlineThicknessForClues = 1.f;
     this->characterSizeForClues = 18;
     Clue::setStaticCluesParameters(textColorForClues, tileSize, outlineThicknessForClues, tileMargin, characterSizeForClues);
-    
-    //Inicjalizacja pliku poziomu
-    this->inputFile = std::ifstream("Levels/level1.txt");
-    if (!inputFile.is_open()) {
-        std::cerr << "Error opening the file!" << std::endl;
-        exit(1);
-    }
 
 }
 
@@ -56,7 +49,7 @@ void Game::createWindow()   //Tworzenie okna gry
     this->videoMode.height = 600;
     this->videoMode.width = 800;
     this->title = "Nanograms";
-    this->style = sf::Style::Titlebar | sf::Style::Close;
+    this->style = sf::Style::Titlebar | sf::Style::Close ;
     this->gameWindow = new sf::RenderWindow(videoMode, title, style);
     this->gameWindow->setFramerateLimit(60);
     if (icon.loadFromFile("Images/cross.png"))     //Ustawienie ikony okna 
@@ -67,7 +60,6 @@ void Game::createWindow()   //Tworzenie okna gry
 
 void Game::initialiseStates()
 {
-    //this->states.push(new GameState((this->gameWindow), &this->states)); //TODO: Będzie zaczynało się od menu raczej
     this->states.push(new MainMenu((this->gameWindow), &this->states));
 }
 
@@ -84,11 +76,34 @@ void Game::pollEvents()  //metoda do obsługi zdarzeń okna
     {
         switch (this->event.type)
         {
+
         case sf::Event::Closed:
+            while (!this->states.empty())
+            {
+                delete this->states.top();  //Zwalnianie pamięci po stanie
+                this->states.pop();         //Board także jest usuwana
+            }
             this->gameWindow->close();
             break;
-        default:
+
+        case sf::Event::KeyPressed:
+            if (event.key.code == sf::Keyboard::Escape)
+            {
+                if (!this->states.empty())
+                {
+                    if (typeid(*states.top()) != typeid(MainMenu))
+                    {
+                        this->states.top()->quitState();
+                    }
+                }
+            }
             break;
+
+        case sf::Event::Resized:
+            sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+            this->gameWindow->setView(sf::View(visibleArea));
+            break;
+        
         }
     }
 }
@@ -96,15 +111,15 @@ void Game::pollEvents()  //metoda do obsługi zdarzeń okna
 
 void Game::update()
 {
+    
     this->pollEvents();                         //Obsługa zdarzeń w oknie
-
-    if (!this->states.empty())  //Obsługa stanów
+    if (!this->states.empty())  //Obsługa stanów - jeśli jakiekolwiek są na stosie
     {
-        this->states.top()->update();  //Update bieżącego stanu
+        this->states.top()->update(event);  //Update bieżącego stanu
 
         if (this->states.top()->getQuit())  //Wychodzenie z bieżącego stanu
         {
-            this->states.top()->endState();
+            this->states.top()->endState(); //To tylko wyświetla komunikat póki co
 
             delete this->states.top();  //Zwalnianie pamięci po stanie
             this->states.pop();         //Board także jest usuwana
@@ -142,6 +157,7 @@ void Game::runGame()
         this->update();
     }
 }
+
 
 void Game::endApplication()
 {

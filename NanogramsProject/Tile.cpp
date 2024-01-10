@@ -6,17 +6,8 @@ sf::Vector2f Tile::tileSize = sf::Vector2f(25.0f, 25.0f);
 float Tile::outlineThickness = 2.0f;
 float Tile::tileMargin = 5.0f;
 
-
-
-void Tile::setTextures()
+Tile::Tile(sf::Texture& texture) : status(0), targetStatus(0), crossTexture(texture)
 {
-    if (!texture.loadFromFile("Images/cross.png"))
-        std::cout << "Blad odczytu tekstury cross";
-}
-
-Tile::Tile() : status(0), targetStatus(0)
-{
-    this->setTextures();
     this->setStatus(this->status);
     this->tile.setSize(tileSize);
     this->tile.setOutlineColor(outlineColor);
@@ -36,6 +27,17 @@ void Tile::setStaticTileParameters(sf::Color outlineColorSet, sf::Vector2f tileS
     tileSize = tileSizeSet;
     outlineThickness = outlineThicknessSet;
     tileMargin = tileMarginSet;
+}
+
+void Tile::setNewSizeAndMargin(sf::Vector2f newTileSize, float newTileMargin)
+{
+    tileSize = newTileSize;
+    tileMargin = newTileMargin;
+}
+
+void Tile::setNewTileSize(sf::Vector2f newTileSize)
+{
+    this->tile.setSize(newTileSize);
 }
 
 const sf::Vector2f Tile::getTilePosition() const
@@ -124,7 +126,7 @@ void Tile::setStatus(unsigned short newStatus)
         break;
     case CROSSED:
         this->tile.setFillColor(sf::Color::White);
-        tile.setTexture(&texture);
+        tile.setTexture(&crossTexture);
         break;
     default:
         break;

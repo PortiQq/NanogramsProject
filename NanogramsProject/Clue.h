@@ -46,6 +46,8 @@ public:
 	void setCluePosition(sf::Vector2f newPosition);
 	void setCluePosition(float xValue, float yValue);
 
+	void setNewCharacterSize(int newCharacterSize);
+
 	//gettery
 	static const float getBoxMargin();
 	const sf::RectangleShape getTextBox() const;

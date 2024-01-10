@@ -7,6 +7,7 @@ State::State(sf::RenderWindow* window, std::stack<State*>* states)
 	this->quit = false;
 	this->isSetUp = false;
 	loadFonts();
+	loadTextures();
 }
 
 State::~State()
@@ -19,10 +20,6 @@ const bool& State::getQuit() const
 	return this->quit;
 }
 
-const bool& State::getIsSetUp() const
-{
-	return this->isSetUp;
-}
 
 void State::loadFonts()
 {
@@ -32,15 +29,21 @@ void State::loadFonts()
 	}
 }
 
+
+void State::loadTextures()
+{
+	if (!this->crossTexture.loadFromFile("Images/cross.png"))
+	{
+		"ERROR: Tekstura cross niewczytana w State";
+	}
+}
+
+
 void State::quitState()
 {
 	this->quit = true;
 }
 
-void State::setStateStatus()
-{
-	this->isSetUp = true;
-}
 
 void State::updateMousePosition()
 {
@@ -49,7 +52,7 @@ void State::updateMousePosition()
 }
 
 
-void State::checkQuit()
+void State::quitKeybind()
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 	{
@@ -59,8 +62,5 @@ void State::checkQuit()
 
 const bool State::checkIfSetUp() const
 {
-	if (this->isSetUp == true)
-		return true;
-	else
-		return false;
+	return (this->isSetUp) ? true : false;
 }

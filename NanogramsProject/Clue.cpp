@@ -109,6 +109,11 @@ void Clue::setCluePosition(float xValue, float yValue)
         position.y + (textBox.getSize().y - textBounds.height) / 2);
 }
 
+void Clue::setNewCharacterSize(int newCharacterSize)
+{
+    this->text.setCharacterSize(newCharacterSize);
+}
+
 
 const float Clue::getBoxMargin()
 {

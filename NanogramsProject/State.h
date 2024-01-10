@@ -27,31 +27,29 @@ protected:
 
 	//Czcionka
 	sf::Font font;
+	sf::Texture crossTexture;
 	void loadFonts();
-
-	//Metody chronione
-	void quitState();
+	void loadTextures();
 
 public:
+	void quitState();	//Wyjście ze stanu - quit = true
+
 	State(sf::RenderWindow* window, std::stack<State*>* states);
 	virtual ~State();
 
 	//gettery
 	const bool& getQuit() const;		//Wykorzystywane w klasie Game
-	const bool& getIsSetUp() const;		//Chwilowo niewykorzystane, może nie być potrzebne
-	virtual const bool checkIfSetUp() const;
-	virtual void checkQuit();			//Ustawia quit jeśli: warunek esc
-
-	//settery
-	virtual void setStateStatus();
-
+	
 	//Pozycja myszy
-	virtual void updateMousePosition();
+	void updateMousePosition();	//TODO: usunąłem virtual - ogarnąć czy OK
+
+	virtual const bool checkIfSetUp() const;
+	virtual void quitKeybind();			//Ustawia quit jeśli: warunek esc
 
 	//Metody czysto wirtualne
 	virtual void setUpState(std::ifstream &inputFile) = 0;
 	virtual void endState() = 0;
-	virtual void update() = 0;	//Pure virtual. Te metody będą musiały
-	virtual void render(sf::RenderTarget* target = nullptr) = 0;	//być zdefiniowane w klasach pochodnych
+	virtual void update(sf::Event& gameEvent) = 0;	
+	virtual void render(sf::RenderTarget* target = nullptr) = 0;
 };
 

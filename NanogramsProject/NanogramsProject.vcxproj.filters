@@ -33,9 +33,6 @@
     <ClInclude Include="MainMenu.h">
       <Filter>States</Filter>
     </ClInclude>
-    <ClInclude Include="Button.h">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
     <ClInclude Include="Tile.h">
       <Filter>Elementy gry</Filter>
     </ClInclude>
@@ -43,6 +40,15 @@
       <Filter>Elementy gry</Filter>
     </ClInclude>
     <ClInclude Include="Board.h">
+      <Filter>Elementy gry</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelSelect.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
       <Filter>Elementy gry</Filter>
     </ClInclude>
   </ItemGroup>
@@ -62,9 +68,6 @@
     <ClCompile Include="MainMenu.cpp">
       <Filter>States</Filter>
     </ClCompile>
-    <ClCompile Include="Button.cpp">
-      <Filter>Pliki źródłowe</Filter>
-    </ClCompile>
     <ClCompile Include="Tile.cpp">
       <Filter>Elementy gry</Filter>
     </ClCompile>
@@ -74,10 +77,14 @@
     <ClCompile Include="Board.cpp">
       <Filter>Elementy gry</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\Levels\level1.txt">
-      <Filter>Pliki zasobów</Filter>
-    </Text>
+    <ClCompile Include="Editor.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelSelect.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Elementy gry</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -6,7 +6,7 @@
 
 #include "State.h"
 #include "Button.h"
-#include "GameState.h"
+#include "LevelSelect.h"
 
 
 class MainMenu : public State
@@ -18,7 +18,9 @@ private:
 	
 	//Mapa przycisków
 	std::map<std::string, Button*> buttons;
+	
 
+	//Inicjalizacja pól prywatnych
 	void initialiseBackground();
 	void initialiseButtons();
 
@@ -26,22 +28,18 @@ public:
 	//Konstruktor, destruktor
 	MainMenu(sf::RenderWindow* window, std::stack<State*>* states);
 	virtual ~MainMenu();
-	
+
 	void setUpState(std::ifstream& inputFile);
-	void endState();
 
-	//Dostęp do zmiennych
-	const bool checkIfSetUp() const;
-
-	//Inne metody publiczne
+	void endState();	//Obsługa wychodzenia ze stanu
 
 	//Update
-	void updateKeybinds();
-	void updateButtons();
-	void update();
+	void updateButtons(sf::Event& gameEvent);
+	void update(sf::Event& gameEvent);
 
 	//Render
 	void renderButtons(sf::RenderTarget* target = nullptr);
 	void render(sf::RenderTarget* target = nullptr);
+
 };
 

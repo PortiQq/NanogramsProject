@@ -5,15 +5,19 @@
 #include <fstream>
 
 
-Board::Board(short rows, short cols) : rows(rows), cols(cols), gridHeight(rows), gridWidth(cols)
+Board::Board(short rows, short cols, sf::Texture& texture) : 
+    rows(rows), cols(cols), gridHeight(rows), gridWidth(cols),
+    crossTexture(texture)
 {
-	//
+    this->crossTexture = texture;
 }
 
 
-Board::Board() : rows(0), cols(0), gridHeight(rows), gridWidth(cols)
+Board::Board(sf::Texture& texture) : 
+    rows(0), cols(0), gridHeight(rows), gridWidth(cols),
+    crossTexture(texture)
 {
-	//
+    this->crossTexture = texture;
 }
 
 
@@ -89,7 +93,7 @@ void Board::createBoard()
         tileRow.clear();
         for (int colCounter = 0; colCounter < this->cols; colCounter++)
         {
-            tileRow.push_back(new Tile());
+            tileRow.push_back(new Tile(crossTexture));
         }
         this->board.push_back(tileRow);
     }
@@ -205,15 +209,15 @@ void Board::setUpPositions()
     float boxMargin = Clue::getBoxMargin();
 
     sf::Vector2f tilesPosition = sf::Vector2f(  //Pozycja startowa kratek planszy
-        maxCluesWidth * oneTileSize.x + tileMargin + 100.f, 
-        maxCluesHeight * oneTileSize.y + tileMargin + 100.f);  
+        maxCluesWidth * oneTileSize.x + 2*tileMargin, 
+        maxCluesHeight * oneTileSize.y + 2*tileMargin);  
 
     sf::Vector2f horizontalCluesPosition = sf::Vector2f(    //Pozycja startowa podpowiedzi dla wierszy
         tilesPosition.x - tileMargin,
         tilesPosition.y - oneTileSize.y - tileMargin);  
 
     sf::Vector2f verticalCluesPosition = sf::Vector2f(  //Pozycja startowa podpowiedzi dla kolumn
-        tilesPosition.x,
+        tilesPosition.x ,
         tilesPosition.y - oneTileSize.y - tileMargin);
     
 
@@ -234,8 +238,8 @@ void Board::setUpPositions()
         for (int i = clueRow.size() - 1; i >= 0; i--)
         {
             clueRow[forwI]->setCluePosition(
-                horizontalCluesPosition.y - (oneTileSize.x - boxMargin) * i,
-                horizontalCluesPosition.x + (oneTileSize.x +  boxMargin) * rowCounter);
+                horizontalCluesPosition.y - (oneTileSize.x - tileMargin) * i,
+                horizontalCluesPosition.x + (oneTileSize.x +  tileMargin) * rowCounter);
             forwI++;
         }
         rowCounter++;
@@ -249,8 +253,8 @@ void Board::setUpPositions()
         for (int i = clueCol.size() - 1; i >= 0; i--)
         {
             clueCol[forwI]->setCluePosition(
-                verticalCluesPosition.x + (oneTileSize.x + boxMargin) * colCounter,
-                verticalCluesPosition.y - (oneTileSize.y + boxMargin) * i
+                verticalCluesPosition.x + (oneTileSize.x + tileMargin) * colCounter,
+                verticalCluesPosition.y - (oneTileSize.y + tileMargin) * i
                 );
             forwI++;
         }
@@ -366,6 +370,16 @@ const short Board::getCols() const
     return this->cols;
 }
 
+const short Board::getGridWidth() const
+{
+    return this->gridWidth;
+}
+
+const short Board::getGridHeight() const
+{
+    return this->gridHeight;
+}
+
 
 std::vector<std::vector<Tile*>> Board::getBoard() const
 {
@@ -389,5 +403,35 @@ bool Board::checkIfCompleted()
     }
     std::cout << "Board completed" << std::endl;
     return true;
+}
+
+void Board::resize(sf::Vector2f newTileSize, float newMargin, int newCharacterSize)
+{
+    for (auto& tileRow : this->board)
+    {
+        for (auto& tile : tileRow)
+        {
+            tile->setNewTileSize(newTileSize);
+        }
+    }
+
+    for (auto& clueRow : this->verticalClues)
+    {
+        for (auto& clue : clueRow)
+        {
+            clue->setNewCharacterSize(newCharacterSize);
+        }
+    }
+
+    for (auto& clueCol : this->horizontalClues)
+    {
+        for (auto& clue : clueCol)
+        {
+            clue->setNewCharacterSize(newCharacterSize);
+        }
+    }
+    Tile::setNewSizeAndMargin(newTileSize, newMargin);
+    this->setUpPositions();
+    
 }
 

@@ -21,7 +21,7 @@ private:
 	sf::Color activeColor;
 public:
 	Button(float x, float y, float width, float height, 
-		sf::Font& font, std::string text, 
+		sf::Font& font, std::string text, int characterSize,
 		sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor);
 	~Button();
 
@@ -29,7 +29,7 @@ public:
 	const bool isPressed() const;
 
 	//Metody
-	void update(sf::Vector2f mousePosition);
+	void update(sf::Vector2f mousePosition, sf::Event& event);
 	void render(sf::RenderTarget& target);
 
 };

@@ -1,7 +1,8 @@
 ﻿#pragma once
 
 #include "MainMenu.h"
-#include "GameState.h"
+#include "GameState.h"		//TODO: To będzie do wyrzucenia chyba
+#include "LevelSelect.h"
 
 
 
@@ -61,8 +62,6 @@ public:
 	void pollEvents();
 	void runGame();
 	void endApplication();
-
-
 
 };
 

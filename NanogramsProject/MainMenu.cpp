@@ -2,8 +2,6 @@
 
 void MainMenu::initialiseBackground()
 {
-	//this->menuBackground.setSize(sf::Vector2f((float)this->window->getSize().x, (float)this->window->getSize().y));
-	//this->menuBackground.setFillColor(sf::Color::Black);
 	this->menuBackground.setSize(
 		sf::Vector2f
 		(
@@ -18,6 +16,7 @@ void MainMenu::initialiseBackground()
 	this->menuBackground.setTexture(&this->backgroundTexture);
 }
 
+
 void MainMenu::initialiseButtons()
 {
 	float xFirst = 320, yFirst = 80, yDiff = 100;
@@ -26,21 +25,22 @@ void MainMenu::initialiseButtons()
 	sf::Color clickedButtonColor = sf::Color(0, 162, 162, 255);
 
 	this->buttons["PLAY_BTN"] = new Button(320, yFirst+=yDiff, 150, 50,
-		this->font, "Play Game",
+		this->font, "Play Game", 20,
 		idleButtonColor, hoveredButtonColor, clickedButtonColor);
 
 	this->buttons["USER_BTN"] = new Button(320, yFirst += yDiff, 150, 50,
-		this->font, "User Levels",
+		this->font, "User Levels", 20,
 		idleButtonColor, hoveredButtonColor, clickedButtonColor);
 
 	this->buttons["EDITOR_BTN"] = new Button(320, yFirst += yDiff, 150, 50,
-		this->font, "Level Editor",
+		this->font, "Level Editor", 20,
 		idleButtonColor, hoveredButtonColor, clickedButtonColor);
 
 	this->buttons["EXIT_BTN"] = new Button(320, yFirst += yDiff, 150, 50,
-		this->font, "Exit Game",
+		this->font, "Exit Game", 20,
 		idleButtonColor, hoveredButtonColor, clickedButtonColor);
 }
+
 
 MainMenu::MainMenu(sf::RenderWindow* window, std::stack<State*>* states) : State(window, states)
 {
@@ -71,31 +71,20 @@ void MainMenu::endState()
 	std::cout << "Ending main menu state" << std::endl;
 	std::cout << "..." << std::endl;
 	std::cout << "Main menu state ended\n";
-	//this->quit = true;
 }
 
 
-const bool MainMenu::checkIfSetUp() const
+void MainMenu::updateButtons(sf::Event& gameEvent)
 {
-	return (this->isSetUp) ? true : false;
-}
-
-
-void MainMenu::updateKeybinds()
-{
-	//this->checkQuit();	//Ustawianie wyjścia ze stanu na klawisz esc
-}
-
-void MainMenu::updateButtons()
-{
+	
 	for (auto& btn : this->buttons)
 	{
-		btn.second->update(this->viewMousePosition);
+		btn.second->update(this->viewMousePosition, gameEvent);
 	}
 
 	if (this->buttons["PLAY_BTN"]->isPressed())
 	{
-		this->states->push(new GameState((this->window), this->states));
+		this->states->push(new LevelSelect((this->window), this->states));
 	}
 
 	if (this->buttons["USER_BTN"]->isPressed())
@@ -116,11 +105,11 @@ void MainMenu::updateButtons()
 }
 
 
-void MainMenu::update()
+void MainMenu::update(sf::Event& gameEvent)
 {
+	
 	this->updateMousePosition();
-	this->updateKeybinds();
-	this->updateButtons();
+	this->updateButtons(gameEvent);
 }
 
 
@@ -131,6 +120,7 @@ void MainMenu::renderButtons(sf::RenderTarget* target)
 		btn.second->render(*target);
 	}
 }
+
 
 void MainMenu::render(sf::RenderTarget* target)
 {

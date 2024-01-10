@@ -56,6 +56,7 @@ Board::~Board()
     std::cout << "Destruktor board\n";
 }
 
+
 void Board::checkDimensions(std::ifstream &inputLevel)
 {
     int xMax = 0, yMax = 0;
@@ -264,6 +265,41 @@ void Board::setUpPositions()
 }
 
 
+void Board::setUpPositionsEditor()
+{
+    sf::Vector2f oneTileSize = Tile::getTileSize();
+    float tileMargin = Tile::getTileMargin();
+
+    sf::Vector2f tilesPosition = sf::Vector2f(
+        oneTileSize.x + 2 * tileMargin,
+        oneTileSize.y + 2 * tileMargin);
+
+    for (int row = 0; row < this->rows; row++)  //Ustalanie pozycji kratek w edytorze
+    {
+        for (int col = 0; col < this->cols; col++)
+        {
+            this->board[row][col]->setTilePosition(
+                tilesPosition.y + (oneTileSize.y + tileMargin) * col,
+                tilesPosition.x + (oneTileSize.x + tileMargin) * row);
+        }
+    }
+}
+
+void Board::interchangeStatuses()
+{
+    for (auto& tileRow : this->board)
+    {
+        for (auto& tile : tileRow)
+        {
+            if (tile->getCurrentStatus() == 1)
+                tile->setTargetStatus(1);
+            else 
+                tile->setTargetStatus(0);
+        }
+    }
+}
+
+
 void Board::setUpLevel(std::ifstream& inputLevel)   //TODO: Dodać font
 {
     this->checkDimensions(inputLevel);
@@ -272,7 +308,6 @@ void Board::setUpLevel(std::ifstream& inputLevel)   //TODO: Dodać font
     this->setUpClues();             //TODO: Przekazać im czcionkę
     this->setUpPositions();
 }
-
 
 
 void Board::updateBoard(sf::Vector2f mousePosition)
@@ -325,6 +360,7 @@ void Board::updateBoard(sf::Vector2f mousePosition)
     }
 }
 
+
 void Board::updateClues()
 {
     //TODO: Wykreślanie numerków
@@ -370,10 +406,12 @@ const short Board::getCols() const
     return this->cols;
 }
 
+
 const short Board::getGridWidth() const
 {
     return this->gridWidth;
 }
+
 
 const short Board::getGridHeight() const
 {
@@ -405,6 +443,7 @@ bool Board::checkIfCompleted()
     return true;
 }
 
+
 void Board::resize(sf::Vector2f newTileSize, float newMargin, int newCharacterSize)
 {
     for (auto& tileRow : this->board)
@@ -433,5 +472,46 @@ void Board::resize(sf::Vector2f newTileSize, float newMargin, int newCharacterSi
     Tile::setNewSizeAndMargin(newTileSize, newMargin);
     this->setUpPositions();
     
+}
+
+
+void Board::setDimensions(unsigned short rows, unsigned short cols)
+{
+    this->rows = rows;
+    this->cols = cols;
+}
+
+
+void Board::clearBoard()
+{
+    for (auto& tileRow : this->board)   //Zwalnianie pamięci planszy
+    {
+        for (auto& tile : tileRow)
+        {
+            delete tile;
+        }
+        tileRow.clear();
+    }
+    board.clear();
+}
+
+
+void Board::setUpEdited(unsigned short rows, unsigned short cols)
+{
+    this->clearBoard();
+    this->setDimensions(rows, cols);
+    this->createBoard();
+    this->setUpPositionsEditor();
+}
+
+void Board::renderEdited(sf::RenderTarget& target)
+{
+    for (auto& tileRow : board) //Rysowanie kratek
+    {
+        for (auto& tile : tileRow)
+        {
+            tile->draw(target);
+        }
+    }
 }
 

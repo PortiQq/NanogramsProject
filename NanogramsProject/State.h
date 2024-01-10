@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-
 #include <fstream>
 #include <vector>
 #include <stack>
@@ -38,16 +37,15 @@ public:
 	virtual ~State();
 
 	//gettery
-	const bool& getQuit() const;		//Wykorzystywane w klasie Game
+	const bool& getQuit() const;
 	
 	//Pozycja myszy
-	void updateMousePosition();	//TODO: usunąłem virtual - ogarnąć czy OK
+	virtual void updateMousePosition();
 
 	virtual const bool checkIfSetUp() const;
-	virtual void quitKeybind();			//Ustawia quit jeśli: warunek esc
 
 	//Metody czysto wirtualne
-	virtual void setUpState(std::ifstream &inputFile) = 0;
+	virtual void setUpState() = 0;
 	virtual void endState() = 0;
 	virtual void update(sf::Event& gameEvent) = 0;	
 	virtual void render(sf::RenderTarget* target = nullptr) = 0;

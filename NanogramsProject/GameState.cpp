@@ -39,8 +39,8 @@ GameState::GameState(sf::RenderWindow* window, std::stack<State*>* states, std::
 {
 	this->initialiseButtons();
 	this->initialiseBackground();
-	this->inputFile = std::ifstream(inputFileName);
-		if (!inputFile.is_open())
+	this->levelFile = std::ifstream(inputFileName);
+		if (!levelFile.is_open())
 		{
 			std::cerr << "Failed to open file: " << inputFileName << std::endl;
 		}
@@ -53,14 +53,16 @@ GameState::~GameState()
 }
 
 
-void GameState::setUpState(std::ifstream& inputFile)
+void GameState::setUpState()
 {
 	this->board.resize(sf::Vector2f(25.f, 25.f), 5.f, 12);
-	board.setUpLevel(this->inputFile);
+	board.setUpLevel(this->levelFile);
+
+	float oneTileSize = Tile::getTileSize().x, tileMargin = Tile::getTileMargin();
 		sf::Vector2u newWindowSize
 		(
-			(Tile::getTileSize().x + Tile::getTileMargin()) * this->board.getGridWidth() + Tile::getTileMargin(),
-			(Tile::getTileSize().y + Tile::getTileMargin()) * this->board.getGridHeight() + Tile::getTileMargin()
+			(oneTileSize + tileMargin) * this->board.getGridWidth() + tileMargin,
+			(oneTileSize + tileMargin) * this->board.getGridHeight() + tileMargin
 		);
 		this->window->setSize(newWindowSize);
 		this->gameStateBackground.setSize(sf::Vector2f(newWindowSize.x, newWindowSize.y));
@@ -80,11 +82,11 @@ void GameState::setUpState(std::ifstream& inputFile)
 
 void GameState::endState()
 {
-	std::cout << "Ending game state"<<std::endl;
-	std::cout << "..." << std::endl;
+	std::cout << "Wychodzenie ze stanu gry\n";
+	std::cout << "...\n";
 	this->window->setSize(sf::Vector2u(800, 600));
-	this->inputFile.close();
-	std::cout<<"Game state ended\n";
+	this->levelFile.close();
+	std::cout<<"Stan gry zakonczony"<<std::endl;
 }
 
 

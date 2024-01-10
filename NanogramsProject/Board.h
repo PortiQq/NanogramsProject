@@ -25,6 +25,10 @@ private:
 	void setUpClues();									//Tworzy tablice podpowiedzi
 	void setUpPositions();								//Ustala pozycje kratek i podpowiedzi
 
+	//Specyficzne dla edytora
+	void setUpPositionsEditor();
+	void interchangeStatuses();
+
 public:
 	//Konstruktory, destruktor
 	Board(short rows, short cols, sf::Texture& texture);
@@ -46,7 +50,14 @@ public:
 
 	bool checkIfCompleted();
 
+	//Do zmiany rozmiaru zbyt dużych plansz
 	void resize(sf::Vector2f newTileSize, float newMargin, int newCharacterSize);
+
+	//Specyficzne dla edytora
+	void setDimensions(unsigned short rows, unsigned short cols);
+	void clearBoard();
+	void setUpEdited(unsigned short rows, unsigned short cols);
+	void renderEdited(sf::RenderTarget& target);
 
 };
 

@@ -14,7 +14,7 @@ private:
 	
 	Board board;
 
-	std::ifstream inputFile;
+	std::ifstream levelFile;
 	std::string inputFileName;
 
 	//Prywatne metody obsługi planszy gry
@@ -26,7 +26,7 @@ public:
 	GameState(sf::RenderWindow* window, std::stack<State*>* states, std::string inputFileName);
 	virtual ~GameState();
 
-	void setUpState(std::ifstream& inputFile);
+	void setUpState();
 	void endState();
 	
 	//Update

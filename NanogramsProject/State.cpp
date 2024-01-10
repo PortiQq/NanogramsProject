@@ -52,14 +52,6 @@ void State::updateMousePosition()
 }
 
 
-void State::quitKeybind()
-{
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-	{
-		this->quit = true;
-	}
-}
-
 const bool State::checkIfSetUp() const
 {
 	return (this->isSetUp) ? true : false;

@@ -60,7 +60,7 @@ MainMenu::~MainMenu()
 }
 
 
-void MainMenu::setUpState(std::ifstream& inputFile)
+void MainMenu::setUpState()
 {
 	this->isSetUp = true;
 }
@@ -68,9 +68,9 @@ void MainMenu::setUpState(std::ifstream& inputFile)
 
 void MainMenu::endState()
 {
-	std::cout << "Ending main menu state" << std::endl;
-	std::cout << "..." << std::endl;
-	std::cout << "Main menu state ended\n";
+	std::cout << "Wychodzenie ze stanu Main Menu\n";
+	std::cout << "...\n";
+	std::cout << "Stan Main Menu zakonczony" << std::endl;
 }
 
 
@@ -94,7 +94,7 @@ void MainMenu::updateButtons(sf::Event& gameEvent)
 
 	if (this->buttons["EDITOR_BTN"]->isPressed())
 	{
-		//
+		this->states->push(new Editor((this->window), this->states));
 	}
 
 	//Przycisk wyjścia z gry

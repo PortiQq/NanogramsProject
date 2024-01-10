@@ -24,26 +24,26 @@ void LevelSelect::initialiseButtons()		//TODO: Do poprawy pozycje
 		font, "Back to main menu", 14,
 		idleButtonColor, hoveredButtonColor, clickedButtonColor);
 
-	int levelCount = 30;		
+	int levelCount = 32;		
 	
+	float xInitial = 25.f, yInitial = 125.f;
+	float xPos = xInitial, yPos = yInitial;
 	int temp = 1;
 	for (int i = 0; i < levelCount; ++i)
-	{
-		float xPos = 100 + 100 * i % window->getSize().x;
-		if (xPos > window->getSize().x - 80)
-		{
-			temp++;
-			xPos = 100 + 100 * (i + 1) % window->getSize().x;
-		}
-			
-		float yPos = 120.f * temp;
-		
-
-		std::string buttonText = "Level\n   " + std::to_string(i+1);
-
+	{ 
+		std::string buttonText = "Level\n   " + std::to_string(i + 1);
 		this->buttons.push_back(new Button(xPos, yPos, 50.f, 50.f,
-			font, buttonText, 14,
-			idleButtonColor, hoveredButtonColor, clickedButtonColor));
+		font, buttonText, 14,
+		idleButtonColor, hoveredButtonColor, clickedButtonColor));
+	
+		
+		if (xPos > window->getSize().x - 100)
+		{
+			xPos = xInitial + 100;
+			temp++;
+			yPos = 125.f * temp;
+		}
+		xPos = xInitial + 100 * (i + 1) % window->getSize().x;
 	}
 }
 
@@ -75,7 +75,7 @@ LevelSelect::~LevelSelect()
 }
 
 
-void LevelSelect::setUpState(std::ifstream& inputFile)
+void LevelSelect::setUpState()
 {
 	this->isSetUp = true;
 }
@@ -83,9 +83,9 @@ void LevelSelect::setUpState(std::ifstream& inputFile)
 
 void LevelSelect::endState()
 {
-	std::cout << "Ending level selection state" << std::endl;
-	std::cout << "..." << std::endl;
-	std::cout << "Level selection state ended\n";
+	std::cout << "Wychodzenie ze stanu wyboru poziomow\n";
+	std::cout << "...\n";
+	std::cout << "Stan wyboru poziomow zakonczony" << std::endl;
 }
 
 

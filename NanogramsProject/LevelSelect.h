@@ -20,7 +20,7 @@ public:
 	LevelSelect(sf::RenderWindow* window, std::stack<State*>* states);
 	virtual ~LevelSelect();
 
-	void setUpState(std::ifstream& inputFile);
+	void setUpState();
 	void endState();
 	void update(sf::Event& gameEvent);
 	void render(sf::RenderTarget* target = nullptr);

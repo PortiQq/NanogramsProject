@@ -19,12 +19,8 @@ private:
 	sf::Image icon;
 	sf::Color backgroundColor;
 
-	//Stany gry
+	//Stos stanów gry
 	std::stack<State*> states;
-
-	//Pliki poziomów
-	std::ifstream inputFile;
-	sf::Font font;
 
 	//pozycja myszy
 	sf::Vector2i windowMousePosition;	//int - piksele
@@ -47,9 +43,8 @@ private:
 	void initialiseStates();
 
 public:
-	
 
-	//konstruktory destruktory
+	//konstruktor, destruktor
 	Game();
 	~Game();
 

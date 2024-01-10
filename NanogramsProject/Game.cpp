@@ -151,7 +151,7 @@ void Game::runGame()
         if (!this->states.empty())  
         {
             if (!this->states.top()->checkIfSetUp())
-                this->states.top()->setUpState(this->inputFile);
+                this->states.top()->setUpState();
         }
         this->render();
         this->update();

@@ -7,6 +7,7 @@
 #include "State.h"
 #include "Button.h"
 #include "LevelSelect.h"
+#include "Editor.h"
 
 
 class MainMenu : public State
@@ -29,9 +30,9 @@ public:
 	MainMenu(sf::RenderWindow* window, std::stack<State*>* states);
 	virtual ~MainMenu();
 
-	void setUpState(std::ifstream& inputFile);
-
-	void endState();	//Obsługa wychodzenia ze stanu
+	//Obsługa stanu
+	void setUpState();
+	void endState();
 
 	//Update
 	void updateButtons(sf::Event& gameEvent);

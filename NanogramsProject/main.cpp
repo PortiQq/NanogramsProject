@@ -2,8 +2,8 @@
 
 int main()
 {
-    Game game;      //utworzenie obiektu gry
-    game.runGame(); //Metoda obsługi gry
+    Game game;      
+    game.runGame(); // Obsługa gry
 
     return 0;
 }

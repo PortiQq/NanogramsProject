@@ -3,6 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <stack>
+#include <filesystem>
 
 #include "Tile.h"
 #include "Clue.h"

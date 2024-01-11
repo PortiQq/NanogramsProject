@@ -66,7 +66,7 @@ void Board::checkDimensions(std::ifstream &inputLevel)
         int x, y;
         std::istringstream iss(line);
         if (iss >> x >> y) {
-            std::cout <<"Odczyt w funkcji checkDimensions: " << x << " " << y << std::endl;
+            //std::cout <<"Odczyt w funkcji checkDimensions: " << x << " " << y << std::endl;
         
             if (x > xMax)
                 xMax = x;
@@ -110,7 +110,7 @@ void Board::setUpTiles(std::ifstream& inputLevel)
         std::istringstream iss(line);
         int x = 0, y = 0;
         if (iss >> x >> y) {
-            std::cout << "Odczyt w funkcji setUpTiles: " << x << " " << y << std::endl;
+            //std::cout << "Odczyt w funkcji setUpTiles: " << x << " " << y << std::endl;
             this->board[x][y]->setTargetStatus(FILLED);
         }
         else {
@@ -210,16 +210,16 @@ void Board::setUpPositions()
     float boxMargin = Clue::getBoxMargin();
 
     sf::Vector2f tilesPosition = sf::Vector2f(  //Pozycja startowa kratek planszy
-        maxCluesWidth * oneTileSize.x + 2*tileMargin, 
-        maxCluesHeight * oneTileSize.y + 2*tileMargin);  
+        maxCluesHeight * oneTileSize.y + 2 * tileMargin + 50.f,
+        maxCluesWidth * oneTileSize.x + 2 * tileMargin );
 
     sf::Vector2f horizontalCluesPosition = sf::Vector2f(    //Pozycja startowa podpowiedzi dla wierszy
         tilesPosition.x - tileMargin,
         tilesPosition.y - oneTileSize.y - tileMargin);  
 
     sf::Vector2f verticalCluesPosition = sf::Vector2f(  //Pozycja startowa podpowiedzi dla kolumn
-        tilesPosition.x ,
-        tilesPosition.y - oneTileSize.y - tileMargin);
+        tilesPosition.y,
+        tilesPosition.x - oneTileSize.x - tileMargin);
     
 
     for (int row = 0; row < this->rows; row++)  //Ustalanie pozycji kratek planszy
@@ -285,7 +285,8 @@ void Board::setUpPositionsEditor()
     }
 }
 
-void Board::interchangeStatuses()
+
+void Board::saveEdited()
 {
     for (auto& tileRow : this->board)
     {
@@ -502,6 +503,91 @@ void Board::setUpEdited(unsigned short rows, unsigned short cols)
     this->setDimensions(rows, cols);
     this->createBoard();
     this->setUpPositionsEditor();
+}
+
+void Board::addRow()
+{
+    this->rows++;
+    std::vector<Tile*> tileRow;
+    for (int colCounter = 0; colCounter < this->cols; colCounter++)
+    {
+        tileRow.push_back(new Tile(crossTexture));
+    }
+    this->board.push_back(tileRow);
+    tileRow.clear();
+
+    this->setUpPositionsEditor();
+}
+
+void Board::addColumn()
+{
+    this->cols++;
+    for (int rowCounter = 0; rowCounter < this->rows; rowCounter++)
+    {
+        board[rowCounter].push_back(new Tile(crossTexture));
+    }
+    this->setUpPositionsEditor();
+}
+
+void Board::subtractRow()
+{
+    this->rows--;
+    for (auto& tile : this->board[rows])
+    {
+        delete tile;
+    }
+    this->board.pop_back();
+}
+
+void Board::subtractColumn()
+{
+    if (this->cols > 1)
+    {
+        this->cols--;
+        for (auto& tileRow : this->board)
+        {
+            delete tileRow[cols];
+            tileRow.pop_back();
+        }
+    }
+}
+
+void Board::updateEdited(sf::Vector2f mousePosition)
+{
+    static bool isMousePressed = false;
+    static unsigned short int initialTileStatus = 0;
+
+    for (auto& tileRow : this->board)
+    {
+        for (auto& tile : tileRow)  //Iteracja po całej planszy
+        {
+            if (tile->getTileGlobalBounds().contains(mousePosition))    //Jeśli najedziemy myszą na kratkę
+            {
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Left))    //1. Obsługa lewego przycisku
+                {
+                    if (!isMousePressed)
+                    {
+                        isMousePressed = true;
+                        initialTileStatus = tile->getCurrentStatus();
+                    }
+                    if (initialTileStatus == UNFILLED) {
+                        tile->setStatus(FILLED);
+                    }
+                    else
+                        tile->setStatus(UNFILLED);
+                }
+
+                else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))  //2. Obsługa prawego przycisku
+                {
+                    tile->setStatus(UNFILLED);
+                }
+
+                else  //3. Ustawienie flagi wciśnięcia myszy na wyłączoną
+                    isMousePressed = false;
+
+            }
+        }
+    }
 }
 
 void Board::renderEdited(sf::RenderTarget& target)

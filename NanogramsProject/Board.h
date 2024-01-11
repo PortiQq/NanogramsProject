@@ -27,7 +27,9 @@ private:
 
 	//Specyficzne dla edytora
 	void setUpPositionsEditor();
-	void interchangeStatuses();
+	void setDimensions(unsigned short rows, unsigned short cols);
+	void clearBoard();
+	
 
 public:
 	//Konstruktory, destruktor
@@ -54,10 +56,16 @@ public:
 	void resize(sf::Vector2f newTileSize, float newMargin, int newCharacterSize);
 
 	//Specyficzne dla edytora
-	void setDimensions(unsigned short rows, unsigned short cols);
-	void clearBoard();
 	void setUpEdited(unsigned short rows, unsigned short cols);
+	
+	void updateEdited(sf::Vector2f mousePosition);
 	void renderEdited(sf::RenderTarget& target);
+	void saveEdited();
+	//Manipulacja wielkością planszy
+	void addRow();
+	void addColumn();
+	void subtractRow();
+	void subtractColumn();
 
 };
 

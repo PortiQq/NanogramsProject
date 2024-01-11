@@ -1,5 +1,5 @@
 ﻿#include "LevelSelect.h"
-//#include <filesystem>	//TODO: Można zrobić zliczanie plików leveli w folderze
+#include <filesystem>	//TODO: Można zrobić zliczanie plików leveli w folderze
 
 void LevelSelect::initialiseBackground()
 {
@@ -23,8 +23,21 @@ void LevelSelect::initialiseButtons()		//TODO: Do poprawy pozycje
 	backButton = new Button(320.f, 30.f, 150.f, 50.f,
 		font, "Back to main menu", 14,
 		idleButtonColor, hoveredButtonColor, clickedButtonColor);
+	
 
-	int levelCount = 32;		
+	int levelCount = 0;
+
+	try {
+		for (const auto& entry : std::filesystem::directory_iterator("Levels")) {
+			if (std::filesystem::is_regular_file(entry.path())) {
+				levelCount++;
+			}
+		}
+	}
+	catch (const std::filesystem::filesystem_error& e) {
+		std::cerr << "ERROR: Blad dostepu do folderu: " << e.what() << std::endl;
+	}
+
 	
 	float xInitial = 25.f, yInitial = 125.f;
 	float xPos = xInitial, yPos = yInitial;

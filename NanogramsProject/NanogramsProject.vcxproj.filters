@@ -13,10 +13,46 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="States">
+      <UniqueIdentifier>{cccc5555-021a-4823-8724-ec707c408f78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Elementy gry">
+      <UniqueIdentifier>{81d5f259-4e1b-481c-baf3-e82594278d60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interfejs">
+      <UniqueIdentifier>{ba276a2f-dc38-4fb2-818c-46aa2fc954fd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
       <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>Elementy gry</Filter>
+    </ClInclude>
+    <ClInclude Include="Clue.h">
+      <Filter>Elementy gry</Filter>
+    </ClInclude>
+    <ClInclude Include="Board.h">
+      <Filter>Elementy gry</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelSelect.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Interfejs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -26,10 +62,32 @@
     <ClCompile Include="main.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="image.png">
-      <Filter>Pliki zasobów</Filter>
-    </Image>
+    <ClCompile Include="State.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>Elementy gry</Filter>
+    </ClCompile>
+    <ClCompile Include="Clue.cpp">
+      <Filter>Elementy gry</Filter>
+    </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>Elementy gry</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelSelect.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Interfejs</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

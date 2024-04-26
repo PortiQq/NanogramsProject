@@ -1,20 +1,16 @@
 ﻿#pragma once
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>  
-#include <SFML/System.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Network.hpp>
 
-#include <iostream>
-#include <vector>
+#include "MainMenu.h"
+#include "GameState.h"
+#include "LevelSelect.h"
+
+
 
 class Game
 {
 private:
-
-	//Zmienne prywatne 
-	sf::RenderWindow* gameWindow;
-	sf::Event event;
+	sf::RenderWindow* gameWindow;	//Wskaźnik na okno główne gry
+	sf::Event event;				//Kontrola zdarzeń
 
 	//Szczegóły okna gry
 	sf::VideoMode videoMode;
@@ -23,57 +19,43 @@ private:
 	sf::Image icon;
 	sf::Color backgroundColor;
 
-	sf::Vector2f tileSize;	//Ustalony rozmiar jednej kratki
-	float tileMargin;		//margines między kratkami
+	//Stos stanów gry
+	std::stack<State*> states;
 
 	//pozycja myszy
 	sf::Vector2i windowMousePosition;	//int - piksele
-	sf::Vector2f viewMousePosition;		//float
+	sf::Vector2f viewMousePosition;		//float - dokładniejsza pozycja
 
-	//Logika gry
-	//Kolory kratek w czasie gry
-	sf::Color filled;		//Wypełnione
-	sf::Color unfilled;		//Niewypełnione
-	bool mouseHold;
+	//Szczegóły dla kratek
+	sf::Vector2f tileSize;				//Ustalony rozmiar jednej kratki
+	sf::Color outlineColorForTiles;
+	float outlineThicknessForTiles;
+	float tileMargin;					//odstęp między kratkami
 
-
-	int rows, cols;	//Tymczasowo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//Szczegóły dla text boxów
+	sf::Color textColorForClues;
+	float outlineThicknessForClues;
+	unsigned short characterSizeForClues;
 
 	//metody prywatne okna
 	void initialiseVariables();
 	void createWindow();
-	void initialiseTiles();		//Ustalenie szczegółów pojedynczej kratki
+	void initialiseStates();
+	const bool gameRunning() const;
 
-	/////////////
-	//obiekty gry
-
-	std::vector<sf::RectangleShape> tiles;
-	sf::RectangleShape tile;
-
-	/////////////
-
+	void render();
+	void update();
+	void pollEvents();
 
 public:
-	//konstruktory destruktory
+
+	//konstruktor, destruktor
 	Game();
 	~Game();
 
-	//Dostęp do zmiennych
-	const bool gameRunning() const;
-	const bool gameBoardRendered() const;
-
 	//metody publiczne
-	void render();
-	void renderTiles();
-
-	void update();
-	void updateTiles();
-
-	void pollEvents();
-	void updateMousePosition();
-
-	void setUpBoard();
-
+	void runGame();
+	void endApplication();
 
 };
 

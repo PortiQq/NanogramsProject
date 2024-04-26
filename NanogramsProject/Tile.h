@@ -22,12 +22,12 @@ class Tile
 		static float tileMargin;
 
 		//Tekstury
-		sf::Texture& crossTexture;		//TODO: zmienić na wskaźnik do tekstury
+		sf::Texture& crossTexture;
 
 	public:
 
 		//Konstruktory i destruktory
-		Tile(sf::Texture& texture);
+		Tile(sf::Texture& crossTexture);
 		~Tile();
 
 		//Ustalenie ogólnych szczegółów kratek
@@ -38,20 +38,17 @@ class Tile
 		const sf::Vector2f getTilePosition() const;
 		const sf::FloatRect getTileGlobalBounds() const;
 		const unsigned short getCurrentStatus() const;
-		const bool getBoolCurrentStatus() const;	//(gdy CROSSED - zwraca false)
+		const bool getBoolCurrentStatus() const;	//gdy CROSSED - zwraca false
 		const bool getTargetStatus() const;
-		const sf::RectangleShape getTile() const;
 		//gettery dla pól statycznych
 		static const sf::Vector2f getTileSize();
 		static const float getTileMargin();
 
 		//settery
-		void setTilePosition(sf::Vector2f position);
 		void setTilePosition(float xValue, float yValue);
 		void setTargetStatus(unsigned short newTargetStatus);
 		void setStatus(unsigned short newStatus);
 		void setNewTileSize(sf::Vector2f newTileSize);	//Do zmiany wielkości kratek w przypadku dużych obrazków
-
 
 		//Inne metody publiczne
 		const void draw(sf::RenderTarget& target) const;

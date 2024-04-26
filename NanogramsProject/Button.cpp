@@ -37,6 +37,18 @@ const bool Button::isPressed() const
 	return false;
 }
 
+void Button::centralisePosition(sf::Vector2u windowSize, float yPos)
+{
+	sf::Vector2f fWindowSize(windowSize.x, windowSize.y);
+	this->button.setPosition(fWindowSize.x / 2 - (this->button.getGlobalBounds().width / 2.f), yPos);
+	this->text.setPosition
+	(
+		this->button.getPosition().x + (this->button.getGlobalBounds().width / 2.f) - this->text.getGlobalBounds().width / 2.f,
+		this->button.getPosition().y + (this->button.getGlobalBounds().height / 2.f) - this->text.getGlobalBounds().height / 2.f - 2.5f
+	);
+}
+
+
 void Button::update(sf::Vector2f mousePosition, sf::Event& event)
 {
 
@@ -67,6 +79,7 @@ void Button::update(sf::Vector2f mousePosition, sf::Event& event)
 		break;
 	}
 }
+
 
 void Button::render(sf::RenderTarget& target)
 {

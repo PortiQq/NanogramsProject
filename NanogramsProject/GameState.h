@@ -6,22 +6,27 @@
 class GameState : public State
 {
 private:
+	//metody inicjalizacji
 	sf::RectangleShape gameStateBackground;
 	void initialiseBackground();
 	void initialiseTexts();
 
-	Button* backButton;
+	//Obsługa przycisków
+	Button* backButton; // *nextLevelButton;
 	void initialiseButtons();
 	void renderButtons(sf::RenderTarget* target = nullptr);
 	void updateButtons(sf::Event& gameEvent);
 	
-	Board board;
+	Board board;	//Pole planszy dla gameState
 
+	//Pola plikowe
 	std::ifstream levelFile;
 	std::string inputFileName;
 
-	sf::Text congrats;
+	//Obsługa wyświetlania informacji o zakończonym poziomie
 	bool visible;
+	sf::Text congrats;
+	sf::RectangleShape congratsRect;
 	void renderText(sf::RenderTarget* target = nullptr);
 	void updateText();
 
@@ -30,7 +35,6 @@ private:
 	void updateBoard();
 public:
 	//Konstruktory, destruktor
-	GameState(sf::RenderWindow* window, std::stack<State*>* states);
 	GameState(sf::RenderWindow* window, std::stack<State*>* states, std::string inputFileName);
 	virtual ~GameState();
 
@@ -42,6 +46,7 @@ public:
 
 	//Render
 	void render(sf::RenderTarget* target = nullptr);
+	void renderCongrats(sf::RenderTarget* target = nullptr);
 
 };
 

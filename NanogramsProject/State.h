@@ -32,7 +32,7 @@ protected:
 	void loadTextures();
 
 public:
-	void quitState();	//Wyjście ze stanu - quit = true
+	void quitState();	//Wyjście ze stanu: quit = true
 
 	State(sf::RenderWindow* window, std::stack<State*>* states);
 	virtual ~State();
@@ -42,7 +42,6 @@ public:
 	
 	//Pozycja myszy
 	virtual void updateMousePosition();
-
 	virtual const bool checkIfSetUp() const;
 
 	//Metody czysto wirtualne

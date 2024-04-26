@@ -23,14 +23,10 @@ private:
 	static sf::Vector2f boxSize;
 	static float outlineThickness;
 	static float boxMargin;
-
-	//Metoda do ładowania czcionki z pliku
-	void loadFont();
 	
 public:
-	//konstruktory, destruktor, ustawienie parametrów statycznych
-	Clue();
-	Clue(unsigned short value);
+	//konstruktor, destruktor, ustawienie parametrów statycznych
+	Clue(unsigned short value, sf::Font& font);
 	~Clue();
 	static void setStaticCluesParameters(
 		sf::Color textColorSet, 
@@ -43,12 +39,11 @@ public:
 	//settery
 	void setValue(int value);
 	void setStatus(bool newStatus);
-	void setCluePosition(sf::Vector2f newPosition);
 	void setCluePosition(float xValue, float yValue);
-
 	void setNewCharacterSize(int newCharacterSize);
 
 	//gettery
+	const unsigned short getValue() const;
 	static const float getBoxMargin();
 	const sf::RectangleShape getTextBox() const;
 	const sf::Text getText() const;

@@ -23,8 +23,13 @@ private:
 	void initialiseButtons();
 	void initialiseTexts();
 
-	//Metody prywatne
-	void saveBoard();
+	//Metody prywatne update i render
+	void updateTexts();
+	void updateButtons(sf::Event& gameEvent);
+	void renderButtons(sf::RenderTarget* target = nullptr);
+	void renderTexts(sf::RenderTarget* target = nullptr);
+
+	void saveBoard();	//Zapisanie pliku i wyjście z edytora
 
 public:
 	Editor(sf::RenderWindow* window, std::stack<State*>* states);
@@ -34,17 +39,9 @@ public:
 	void setUpState();
 	void endState();
 
-	//update
-	void updateButtons(sf::Event& gameEvent);
-	void updateTexts();
 	void update(sf::Event& gameEvent);
-
-	//render
-	void renderButtons(sf::RenderTarget* target = nullptr);
-	void renderTexts(sf::RenderTarget* target = nullptr);
+	
 	void render(sf::RenderTarget* target = nullptr);
-
-	//Inne metody
 	
 };
 

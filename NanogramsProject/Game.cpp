@@ -52,7 +52,7 @@ void Game::createWindow()   //Tworzenie okna gry
     this->style = sf::Style::Titlebar | sf::Style::Close ;
     this->gameWindow = new sf::RenderWindow(videoMode, title, style);
     this->gameWindow->setFramerateLimit(60);
-    if (icon.loadFromFile("Images/cross.png"))     //Ustawienie ikony okna 
+    if (icon.loadFromFile("Images/icon.png"))     //Ustawienie ikony okna 
         this->gameWindow->setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 
 }
@@ -119,16 +119,14 @@ void Game::update()
 
         if (this->states.top()->getQuit())  //Wychodzenie z bieżącego stanu
         {
-            this->states.top()->endState(); //To tylko wyświetla komunikat póki co
-
+            this->states.top()->endState();
             delete this->states.top();  //Zwalnianie pamięci po stanie
-            this->states.pop();         //Board także jest usuwana
+            this->states.pop();
         }
     }
     else    //Gdy wszystkie stany są zamknięte - koniec działania programu
     {
         this->endApplication();
-        this->gameWindow->close();
     }
 }
 
@@ -162,5 +160,6 @@ void Game::runGame()
 void Game::endApplication()
 {
     std::cout << "Ending application\n";
+    this->gameWindow->close();
 }
 

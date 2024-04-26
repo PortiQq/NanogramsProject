@@ -19,38 +19,12 @@ void Clue::setStaticCluesParameters(sf::Color textColorSet, sf::Vector2f boxSize
 }
 
 
-void Clue::loadFont()
-{
-    if (!font.loadFromFile("Fonts/Arial.ttf"))
-    {
-        std::cerr << "Failed to load font from file Fonts/arial.ttf" << std::endl;
-    }
-}
-
-
-Clue::Clue() : textBox(), position(0.0f, 0.0f), value(0), crossedOut(false)
+Clue::Clue(unsigned short value, sf::Font& font) : 
+    textBox(), position(0.0f, 0.0f), value(value), crossedOut(false)
 {
     text.setCharacterSize(characterSize);
     text.setFillColor(textColor);
     this->setValue(this->value);
-    
-    this->loadFont();
-    text.setFont(font);
-
-    textBox.setSize(boxSize);
-    textBox.setOutlineThickness(outlineThickness);
-    
-}
-
-//TODO: Dodać czcionkę jako parametr
-Clue::Clue(unsigned short value) : textBox(), position(0.0f, 0.0f), value(value), crossedOut(false)
-{
-    text.setCharacterSize(characterSize);
-    text.setFillColor(textColor);
-    
-    this->setValue(this->value);
-
-    this->loadFont();   //TODO: To pójdzie do usunięcia
     text.setFont(font);
 
     textBox.setSize(boxSize);
@@ -64,12 +38,12 @@ Clue::~Clue()
 }
 
 
-
 void Clue::setValue(int value)
 {
 	this->value = value;
 	updateText();
 }
+
 
 void Clue::setStatus(bool newStatus)
 {
@@ -87,17 +61,6 @@ void Clue::updateText()
 }
 
 
-void Clue::setCluePosition(sf::Vector2f newPosition)
-{
-    this->position = newPosition;
-    textBox.setPosition(this->position);
-    sf::FloatRect textBounds = text.getLocalBounds();
-    text.setPosition(
-        position.x + (textBox.getGlobalBounds().width /2.f) - textBounds.width / 2.f,
-        position.y + (textBox.getGlobalBounds().height /2.f) - textBounds.height  / 2.f );
-}
-
-
 void Clue::setCluePosition(float xValue, float yValue)
 {
     this->position.x = xValue;
@@ -109,26 +72,36 @@ void Clue::setCluePosition(float xValue, float yValue)
         position.y + (textBox.getSize().y - textBounds.height) / 2);
 }
 
+
 void Clue::setNewCharacterSize(int newCharacterSize)
 {
     this->text.setCharacterSize(newCharacterSize);
 }
 
 
-const float Clue::getBoxMargin()
+const unsigned short Clue::getValue() const
+{
+    return this->value;
+}
+
+
+const float Clue::getBoxMargin()    
 {
     return boxMargin;
 }
 
-const sf::RectangleShape Clue::getTextBox() const
+
+const sf::RectangleShape Clue::getTextBox() const   //
 {
     return this->textBox;
 }
 
-const sf::Text Clue::getText() const
+
+const sf::Text Clue::getText() const    //
 {
     return this->text;
 }
+
 
 const void Clue::draw(sf::RenderTarget& target) const
 {

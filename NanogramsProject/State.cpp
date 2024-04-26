@@ -10,10 +10,12 @@ State::State(sf::RenderWindow* window, std::stack<State*>* states)
 	loadTextures();
 }
 
+
 State::~State()
 {
 
 }
+
 
 const bool& State::getQuit() const
 {

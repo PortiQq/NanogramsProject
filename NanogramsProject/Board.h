@@ -9,8 +9,8 @@ class Board
 private:
 	//Pola prywatne
 	std::vector<std::vector<Tile*>> board;
-	std::vector<std::vector<Clue*>> horizontalClues;
-	std::vector<std::vector<Clue*>> verticalClues;
+	std::vector<std::vector<Clue*>> horizontalClues;	//Podpowiedzi dla wierszy
+	std::vector<std::vector<Clue*>> verticalClues;		//Podpowiedzi dla kolumn
 	short rows;
 	short cols;
 	short gridWidth;	//Ilość obiektów do wyrenderowania na osi poziomej
@@ -22,7 +22,7 @@ private:
 	void checkDimensions(std::ifstream& inputLevel);	//Sprawdza plik i ustala rows i cols
 	void createBoard();									//Wypełnia board kratkami
 	void setUpTiles(std::ifstream& inputLevel);			//Ustala docelowe statusy
-	void setUpClues();									//Tworzy tablice podpowiedzi
+	void setUpClues(sf::Font& font);					//Tworzy tablice podpowiedzi
 	void setUpPositions();								//Ustala pozycje kratek i podpowiedzi
 
 	//Specyficzne dla edytora
@@ -45,7 +45,7 @@ public:
 	std::vector<std::vector<Tile*>> getBoard() const;
 
 	//metody publiczne
-	void setUpLevel(std::ifstream& inputLevel);
+	void setUpLevel(std::ifstream& inputLevel, sf::Font& font);
 	void updateBoard(sf::Vector2f mousePosition);
 	void updateClues();
 	void drawBoard(sf::RenderTarget& target);
@@ -57,10 +57,10 @@ public:
 
 	//Specyficzne dla edytora
 	void setUpEdited(unsigned short rows, unsigned short cols);
-	
 	void updateEdited(sf::Vector2f mousePosition);
 	void renderEdited(sf::RenderTarget& target);
 	void saveEdited();
+
 	//Manipulacja wielkością planszy
 	void addRow();
 	void addColumn();

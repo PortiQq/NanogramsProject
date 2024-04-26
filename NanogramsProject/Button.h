@@ -29,6 +29,7 @@ public:
 	const bool isPressed() const;
 
 	//Metody
+	void centralisePosition(sf::Vector2u windowSize, float yPos);
 	void update(sf::Vector2f mousePosition, sf::Event& event);
 	void render(sf::RenderTarget& target);
 

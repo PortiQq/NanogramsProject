@@ -1,5 +1,5 @@
 ﻿#include "LevelSelect.h"
-#include <filesystem>	//TODO: Można zrobić zliczanie plików leveli w folderze
+#include <filesystem>
 
 void LevelSelect::initialiseBackground()
 {
@@ -28,7 +28,7 @@ void LevelSelect::initialiseButtons()		//TODO: Do poprawy pozycje
 	int levelCount = 0;
 
 	try {
-		for (const auto& entry : std::filesystem::directory_iterator("Levels")) {
+		for (const auto& entry : std::filesystem::directory_iterator(this->pathFolder)) {
 			if (std::filesystem::is_regular_file(entry.path())) {
 				levelCount++;
 			}
@@ -42,9 +42,14 @@ void LevelSelect::initialiseButtons()		//TODO: Do poprawy pozycje
 	float xInitial = 25.f, yInitial = 125.f;
 	float xPos = xInitial, yPos = yInitial;
 	int temp = 1;
+	std::string buttonText = " ";
 	for (int i = 0; i < levelCount; ++i)
 	{ 
-		std::string buttonText = "Level\n   " + std::to_string(i + 1);
+		if ((i + 1) > 9)
+			buttonText = "Level\n  " + std::to_string(i + 1);
+		else
+			buttonText = "Level\n   " + std::to_string(i + 1);
+
 		this->buttons.push_back(new Button(xPos, yPos, 50.f, 50.f,
 		font, buttonText, 14,
 		idleButtonColor, hoveredButtonColor, clickedButtonColor));
@@ -72,6 +77,14 @@ void::LevelSelect::loadFile(std::string filename)
 
 
 LevelSelect::LevelSelect(sf::RenderWindow* window, std::stack<State*>* states) : State(window, states)
+{
+	this->initialiseBackground();
+	this->initialiseButtons();
+}
+
+
+LevelSelect::LevelSelect(sf::RenderWindow* window, std::stack<State*>* states, std::string pathFolder) 
+	:State(window,states), pathFolder(pathFolder)
 {
 	this->initialiseBackground();
 	this->initialiseButtons();
@@ -116,7 +129,7 @@ void LevelSelect::update(sf::Event& gameEvent)
 		button->update(this->viewMousePosition, gameEvent);
 		if (button->isPressed())
 		{
-			std::string filename = "Levels/level" + std::to_string(it + 1) + ".txt";
+			std::string filename = pathFolder + "level" + std::to_string(it + 1) + ".txt";
 			this->states->push(new GameState(this->window, this->states, filename));
 		}
 		it++;

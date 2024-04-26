@@ -243,7 +243,7 @@ void Editor::saveBoard()
 	int count = 0;
 
 	try {
-		for (const auto& entry : std::filesystem::directory_iterator("Levels")) {
+		for (const auto& entry : std::filesystem::directory_iterator("UserLevels")) {
 			if (std::filesystem::is_regular_file(entry.path())) {
 				count++;
 			}

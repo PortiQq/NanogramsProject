@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "MainMenu.h"
-#include "GameState.h"		//TODO: To będzie do wyrzucenia chyba
+#include "GameState.h"
 #include "LevelSelect.h"
 
 
@@ -41,6 +41,11 @@ private:
 	void initialiseVariables();
 	void createWindow();
 	void initialiseStates();
+	const bool gameRunning() const;
+
+	void render();
+	void update();
+	void pollEvents();
 
 public:
 
@@ -48,13 +53,7 @@ public:
 	Game();
 	~Game();
 
-	//Dostęp do zmiennych
-	const bool gameRunning() const;
-
 	//metody publiczne
-	void render();		
-	void update();
-	void pollEvents();
 	void runGame();
 	void endApplication();
 

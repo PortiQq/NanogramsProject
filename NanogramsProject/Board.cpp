@@ -122,7 +122,7 @@ void Board::setUpTiles(std::ifstream& inputLevel)
 }
 
 
-void Board::setUpClues()
+void Board::setUpClues(sf::Font& font)
 {
     unsigned short counter = 0;
     std::vector<Clue*> clueRow;
@@ -140,7 +140,7 @@ void Board::setUpClues()
                 counter++;
                 if (end)    //Gdy na końcu wiersza jest kratka pełna
                 {
-                    clueRow.push_back(new Clue(counter));
+                    clueRow.push_back(new Clue(counter, font));
                     counter = 0;
                 }
                     
@@ -149,7 +149,7 @@ void Board::setUpClues()
             {
                 if (counter > 0) 
                 {
-                    clueRow.push_back(new Clue(counter));   //TODO: Przekazać czcionkę w konstruktorze
+                    clueRow.push_back(new Clue(counter, font));   //TODO: Przekazać czcionkę w konstruktorze
                     counter = 0;
                 }
             }    
@@ -174,7 +174,7 @@ void Board::setUpClues()
                 counter++;
                 if (end)    //Gdy na końcu jest kratka do zamalowania
                 {
-                    clueCol.push_back(new Clue(counter));
+                    clueCol.push_back(new Clue(counter, font));
                     counter = 0;
                 }
 
@@ -183,7 +183,7 @@ void Board::setUpClues()
             {
                 if (counter > 0)
                 {
-                    clueCol.push_back(new Clue(counter));
+                    clueCol.push_back(new Clue(counter, font));
                     counter = 0;
                 }
             }
@@ -210,16 +210,16 @@ void Board::setUpPositions()
     float boxMargin = Clue::getBoxMargin();
 
     sf::Vector2f tilesPosition = sf::Vector2f(  //Pozycja startowa kratek planszy
-        maxCluesHeight * oneTileSize.y + 2 * tileMargin + 50.f,
-        maxCluesWidth * oneTileSize.x + 2 * tileMargin );
+        maxCluesHeight * oneTileSize.y + 4 * tileMargin + 50.f,     //Pozycja Y
+        maxCluesWidth * oneTileSize.x + 2 * tileMargin );           //Pozycja X
 
     sf::Vector2f horizontalCluesPosition = sf::Vector2f(    //Pozycja startowa podpowiedzi dla wierszy
-        tilesPosition.x - tileMargin,
-        tilesPosition.y - oneTileSize.y - tileMargin);  
+        tilesPosition.x - tileMargin,                       //Pozycja Y
+        tilesPosition.y - oneTileSize.y - tileMargin);      //Pozycja X
 
     sf::Vector2f verticalCluesPosition = sf::Vector2f(  //Pozycja startowa podpowiedzi dla kolumn
-        tilesPosition.y,
-        tilesPosition.x - oneTileSize.x - tileMargin);
+        tilesPosition.y - tileMargin,                                //Pozycja Y
+        tilesPosition.x - oneTileSize.x - tileMargin);  //Pozycja X
     
 
     for (int row = 0; row < this->rows; row++)  //Ustalanie pozycji kratek planszy
@@ -286,27 +286,12 @@ void Board::setUpPositionsEditor()
 }
 
 
-void Board::saveEdited()
-{
-    for (auto& tileRow : this->board)
-    {
-        for (auto& tile : tileRow)
-        {
-            if (tile->getCurrentStatus() == 1)
-                tile->setTargetStatus(1);
-            else 
-                tile->setTargetStatus(0);
-        }
-    }
-}
-
-
-void Board::setUpLevel(std::ifstream& inputLevel)   //TODO: Dodać font
+void Board::setUpLevel(std::ifstream& inputLevel, sf::Font& font)   //TODO: Dodać font
 {
     this->checkDimensions(inputLevel);
     this->createBoard();
     this->setUpTiles(inputLevel);   
-    this->setUpClues();             //TODO: Przekazać im czcionkę
+    this->setUpClues(font);             //TODO: Przekazać im czcionkę
     this->setUpPositions();
 }
 
@@ -434,13 +419,11 @@ bool Board::checkIfCompleted()
         {
             if (tile->getBoolCurrentStatus() != tile->getTargetStatus())
             {
-               //std::cout << "Board not completed" << std::endl;
                 return false;
             }
 
         }
     }
-    std::cout << "Board completed" << std::endl;
     return true;
 }
 
@@ -505,6 +488,7 @@ void Board::setUpEdited(unsigned short rows, unsigned short cols)
     this->setUpPositionsEditor();
 }
 
+
 void Board::addRow()
 {
     this->rows++;
@@ -519,6 +503,7 @@ void Board::addRow()
     this->setUpPositionsEditor();
 }
 
+
 void Board::addColumn()
 {
     this->cols++;
@@ -529,6 +514,7 @@ void Board::addColumn()
     this->setUpPositionsEditor();
 }
 
+
 void Board::subtractRow()
 {
     this->rows--;
@@ -538,6 +524,7 @@ void Board::subtractRow()
     }
     this->board.pop_back();
 }
+
 
 void Board::subtractColumn()
 {
@@ -551,6 +538,7 @@ void Board::subtractColumn()
         }
     }
 }
+
 
 void Board::updateEdited(sf::Vector2f mousePosition)
 {
@@ -590,6 +578,7 @@ void Board::updateEdited(sf::Vector2f mousePosition)
     }
 }
 
+
 void Board::renderEdited(sf::RenderTarget& target)
 {
     for (auto& tileRow : board) //Rysowanie kratek
@@ -601,3 +590,17 @@ void Board::renderEdited(sf::RenderTarget& target)
     }
 }
 
+
+void Board::saveEdited()
+{
+    for (auto& tileRow : this->board)
+    {
+        for (auto& tile : tileRow)
+        {
+            if (tile->getCurrentStatus() == 1)
+                tile->setTargetStatus(1);
+            else
+                tile->setTargetStatus(0);
+        }
+    }
+}

@@ -19,6 +19,8 @@ private:
 	
 	//Mapa przycisków
 	std::map<std::string, Button*> buttons;
+
+	std::string pathFolder;		//Powinien być formatu "folder/"
 	
 
 	//Inicjalizacja pól prywatnych

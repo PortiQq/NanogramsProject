@@ -6,7 +6,7 @@ sf::Vector2f Tile::tileSize = sf::Vector2f(25.0f, 25.0f);
 float Tile::outlineThickness = 2.0f;
 float Tile::tileMargin = 5.0f;
 
-Tile::Tile(sf::Texture& texture) : status(0), targetStatus(0), crossTexture(texture)
+Tile::Tile(sf::Texture& crossTexture) : status(0), targetStatus(0), crossTexture(crossTexture)
 {
     this->setStatus(this->status);
     this->tile.setSize(tileSize);
@@ -78,10 +78,6 @@ const bool Tile::getTargetStatus() const
     return this->targetStatus;
 }
 
-const sf::RectangleShape Tile::getTile() const
-{
-    return tile;
-}
 
 const sf::Vector2f Tile::getTileSize()
 {
@@ -93,11 +89,6 @@ const float Tile::getTileMargin()
     return tileMargin;
 }
 
-void Tile::setTilePosition(sf::Vector2f position)
-{
-    this->tilePosition = position;
-    this->tile.setPosition(tilePosition);
-}
 
 void Tile::setTilePosition(float xValue, float yValue)
 {

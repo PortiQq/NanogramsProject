@@ -84,12 +84,15 @@ void MainMenu::updateButtons(sf::Event& gameEvent)
 
 	if (this->buttons["PLAY_BTN"]->isPressed())
 	{
-		this->states->push(new LevelSelect((this->window), this->states));
+		this->pathFolder = "Levels/";
+		this->states->push(new LevelSelect((this->window), this->states, this->pathFolder));
 	}
 
 	if (this->buttons["USER_BTN"]->isPressed())
 	{
-		//
+		this->pathFolder = "UserLevels/";
+		this->states->push(new LevelSelect((this->window), this->states, pathFolder));
+
 	}
 
 	if (this->buttons["EDITOR_BTN"]->isPressed())
